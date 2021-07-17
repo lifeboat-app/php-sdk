@@ -20,10 +20,7 @@ class URL {
     public static function setGetVar(string $key, string $value, string $url): string
     {
         if (!self::is_absolute_url($url)) {
-            $isRelative = true;
             $url = 'http://dummy.com/' . ltrim($url, '/');
-        } else {
-            $isRelative = false;
         }
 
         // try to parse uri
@@ -34,9 +31,10 @@ class URL {
 
         // Parse params and add new variable
         $params = [];
-        if (isset($parts['query'])) {
+        if (array_key_exists('query', $parts)) {
             parse_str($parts['query'], $params);
         }
+
         $params[$key] = $value;
 
         // Generate URI segments and formatting
@@ -55,11 +53,7 @@ class URL {
         // Recompile URI segments
         $newUri = $scheme . '://' . $user . $parts['host'] . $port . $parts['path'] . $params;
 
-        if ($isRelative) {
-            return str_replace('http://dummy.com/', '', $newUri);
-        }
-
-        return $newUri;
+        return str_replace('http://dummy.com/', '', $newUri);
     }
 
     /**
