@@ -61,6 +61,29 @@ class Client {
     }
 
     /**
+     * @param string $access_token
+     * @return array
+     * @throws OAuthException
+     */
+    public function getSites(string $access_token = ''): array
+    {
+        if (!$access_token) $access_token = $this->getAccessToken();
+
+        $curl = new Curl($this->auth_url(self::SITES_URL), [
+            'access_token' => $access_token
+        ]);
+
+        $curl->setMethod('POST');
+        $response = $curl->curl();
+
+        if (!$response->isValid()) {
+            throw new OAuthException($response->getRaw());
+        }
+
+        return $response->getJSON();
+    }
+
+    /**
      * Makes a request to the API to refresh the current access token
      * @see Client::getAccessToken()
      *
