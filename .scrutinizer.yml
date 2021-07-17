@@ -1,0 +1,15 @@
+checks:
+    php: true
+filter:
+    excluded_paths:
+        - '*.min.js'
+        - "third-party/"
+        - "js/default_tests.js"
+coding_style:
+    php:
+        spaces:
+            around_operators:
+                additive: false
+            before_keywords:
+                else: false
+build: true
