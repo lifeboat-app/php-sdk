@@ -4,7 +4,9 @@
     "license": "BSD-3-Clause",
     "autoload": {
         "psr-4": {
-            "Lifeboat\\SDK\\": "src"
+            "Lifeboat\\SDK\\": "src",
+            "Lifeboat\\SDK\\Services\\": "src/services",
+            "Lifeboat\\SDK\\Exceptions\\": "src/exceptions"
         }
     },
     "require": {
