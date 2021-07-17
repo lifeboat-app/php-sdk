@@ -4,9 +4,9 @@ namespace Lifeboat\SDK;
 
 /**
  * Class CurlResponse
- * 
+ *
  * Wrapper class for responses from the API / Oauth service
- * 
+ *
  * @package Lifeboat\SDK
  */
 class CurlResponse
@@ -41,7 +41,7 @@ class CurlResponse
     {
         $data = json_decode($this->result, true);
         if (!is_array($data)) return null;
-        
+
         return $data;
     }
 
