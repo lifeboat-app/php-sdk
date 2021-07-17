@@ -2,8 +2,4 @@
 
 namespace Lifeboat\SDK\Exceptions;
 
-class OAuthException extends \ErrorException {
-    
-        
-    
-}
+class OAuthException extends \ErrorException {}

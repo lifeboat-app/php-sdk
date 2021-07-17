@@ -3,8 +3,8 @@
 namespace Lifeboat\SDK\Services;
 
 use Lifeboat\SDK\CurlResponse;
+use Lifeboat\SDK\Exceptions\InvalidArgumentException;
 use LogicException;
-use InvalidArgumentException;
 
 /**
  * Class Curl
@@ -176,7 +176,7 @@ class Curl {
         switch ($this->getMethod()) {
             case 'GET':
             case 'DELETE':
-                foreach ($this->getDataParams() as $name => $value) $request_uri = HTTP::setGetVar($name, $value, $request_uri);
+                foreach ($this->getDataParams() as $name => $value) $request_uri = $this->setGetVar($name, $value, $request_uri);
                 break;
 
             case 'POST':
@@ -234,22 +234,93 @@ class Curl {
     }
 
     /**
-     * @see $this->curl()
-     *
-     * @return CurlResponse
+     * @param string $key
+     * @param string $value
+     * @param string $url
+     * @return string
+     * @throws InvalidArgumentException If URL is malformed
      */
-    public function curl_api()
+    private function setGetVar(string $key, string $value, string $url): string
     {
-        $ouath          = new OAuth();
-        $access_token   = $ouath->getAccessToken();
-        $site_key       = StoreSelector::get_site_key();
+        if (!self::is_absolute_url($url)) {
+            $isRelative = true;
+            $uri = 'http://dummy.com/' . ltrim($url, '/'); 
+            throw new InvalidArgumentException('Curl::setGetVar() requires $url to be an absolute url');
+        } else {
+            $isRelative = false;
+            $uri = $url;
+        }
 
-        $this->_enable_cache = true;
-        $this->setURL($this->getURL(true));
+        // try to parse uri
+        $parts = parse_url($uri);
+        if (!$parts) {
+            throw new InvalidArgumentException("Can't parse URL: " . $uri);
+        }
 
-        $this->addHeader('access-token', $access_token);
-        $this->addHeader('site-key', $site_key);
+        // Parse params and add new variable
+        $params = [];
+        if (isset($parts['query'])) {
+            parse_str($parts['query'], $params);
+        }
+        $params[$varname] = $varvalue;
 
-        return $this->curl_json();
+        // Generate URI segments and formatting
+        $scheme = (isset($parts['scheme'])) ? $parts['scheme'] : 'http';
+        $user = (isset($parts['user']) && $parts['user'] != '') ? $parts['user'] : '';
+
+        if ($user != '') {
+            // format in either user:pass@host.com or user@host.com
+            $user .= (isset($parts['pass']) && $parts['pass'] != '') ? ':' . $parts['pass'] . '@' : '@';
+        }
+
+        $host = (isset($parts['host'])) ? $parts['host'] : '';
+        $port = (isset($parts['port']) && $parts['port'] != '') ? ':' . $parts['port'] : '';
+        $path = (isset($parts['path']) && $parts['path'] != '') ? $parts['path'] : '';
+
+        // handle URL params which are existing / new
+        $params = ($params) ? '?' . http_build_query($params, null, $separator) : '';
+
+        // keep fragments (anchors) intact.
+        $fragment = (isset($parts['fragment']) && $parts['fragment'] != '') ? '#' . $parts['fragment'] : '';
+
+        // Recompile URI segments
+        $newUri = $scheme . '://' . $user . $host . $port . $path . $params . $fragment;
+
+        if ($isRelative) {
+            return str_replace('http://dummy.com/', '', $newUri);
+        }
+
+        return $newUri;
+    }
+
+    /**
+     * @param string $url
+     * @return bool
+     */
+    public static function is_absolute_url(string $url): bool
+    {
+        // Strip off the query and fragment parts of the URL before checking
+        if (($queryPosition = strpos($url, '?')) !== false) {
+            $url = substr($url, 0, $queryPosition - 1);
+        }
+        if (($hashPosition = strpos($url, '#')) !== false) {
+            $url = substr($url, 0, $hashPosition - 1);
+        }
+        $colonPosition = strpos($url, ':');
+        $slashPosition = strpos($url, '/');
+        return (
+            // Base check for existence of a host on a compliant URL
+            parse_url($url, PHP_URL_HOST)
+            // Check for more than one leading slash without a protocol.
+            // While not a RFC compliant absolute URL, it is completed to a valid URL by some browsers,
+            // and hence a potential security risk. Single leading slashes are not an issue though.
+            || preg_match('%^\s*/{2,}%', $url)
+            || (
+                // If a colon is found, check if it's part of a valid scheme definition
+                // (meaning its not preceded by a slash).
+                $colonPosition !== false
+                && ($slashPosition === false || $colonPosition < $slashPosition)
+            )
+        );
     }
 }
