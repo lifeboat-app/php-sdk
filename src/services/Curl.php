@@ -215,7 +215,7 @@ class Curl {
 
         $result     = curl_exec($ch);
         $http_code  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        
+
         $response = new CurlResponse($http_code, $result);
         if ($this->_enable_cache && isset($cache_key)) self::$_cache[$cache_key] = $response;
 
@@ -237,24 +237,23 @@ class Curl {
      * @param string $key
      * @param string $value
      * @param string $url
+     * @param string $separator
      * @return string
      * @throws InvalidArgumentException If URL is malformed
      */
-    private function setGetVar(string $key, string $value, string $url): string
+    private function setGetVar(string $key, string $value, string $url, string $separator = '&'): string
     {
         if (!self::is_absolute_url($url)) {
             $isRelative = true;
-            $uri = 'http://dummy.com/' . ltrim($url, '/'); 
-            throw new InvalidArgumentException('Curl::setGetVar() requires $url to be an absolute url');
+            $url = 'http://dummy.com/' . ltrim($url, '/');
         } else {
             $isRelative = false;
-            $uri = $url;
         }
 
         // try to parse uri
-        $parts = parse_url($uri);
+        $parts = parse_url($url);
         if (!$parts) {
-            throw new InvalidArgumentException("Can't parse URL: " . $uri);
+            throw new InvalidArgumentException("Can't parse URL: " . $url);
         }
 
         // Parse params and add new variable
@@ -262,7 +261,7 @@ class Curl {
         if (isset($parts['query'])) {
             parse_str($parts['query'], $params);
         }
-        $params[$varname] = $varvalue;
+        $params[$key] = $value;
 
         // Generate URI segments and formatting
         $scheme = (isset($parts['scheme'])) ? $parts['scheme'] : 'http';
