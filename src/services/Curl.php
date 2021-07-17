@@ -4,6 +4,7 @@ namespace Lifeboat\SDK\Services;
 
 use Lifeboat\SDK\CurlResponse;
 use Lifeboat\SDK\Exceptions\InvalidArgumentException;
+use Lifeboat\SDK\Utils\URL;
 use LogicException;
 
 /**
@@ -176,7 +177,7 @@ class Curl {
         switch ($this->getMethod()) {
             case 'GET':
             case 'DELETE':
-                foreach ($this->getDataParams() as $name => $value) $request_uri = $this->setGetVar($name, $value, $request_uri);
+                foreach ($this->getDataParams() as $name => $value) $request_uri = URL::setGetVar($name, $value, $request_uri);
                 break;
 
             case 'POST':
@@ -227,99 +228,9 @@ class Curl {
      *
      * @return CurlResponse
      */
-    public function curl_json()
+    public function curl_json(): CurlResponse
     {
         $this->addHeader('Accept', 'application/json');
         return $this->curl();
-    }
-
-    /**
-     * @param string $key
-     * @param string $value
-     * @param string $url
-     * @param string $separator
-     * @return string
-     * @throws InvalidArgumentException If URL is malformed
-     */
-    private function setGetVar(string $key, string $value, string $url, string $separator = '&'): string
-    {
-        if (!self::is_absolute_url($url)) {
-            $isRelative = true;
-            $url = 'http://dummy.com/' . ltrim($url, '/');
-        } else {
-            $isRelative = false;
-        }
-
-        // try to parse uri
-        $parts = parse_url($url);
-        if (!$parts) {
-            throw new InvalidArgumentException("Can't parse URL: " . $url);
-        }
-
-        // Parse params and add new variable
-        $params = [];
-        if (isset($parts['query'])) {
-            parse_str($parts['query'], $params);
-        }
-        $params[$key] = $value;
-
-        // Generate URI segments and formatting
-        $scheme = (isset($parts['scheme'])) ? $parts['scheme'] : 'http';
-        $user = (isset($parts['user']) && $parts['user'] != '') ? $parts['user'] : '';
-
-        if ($user != '') {
-            // format in either user:pass@host.com or user@host.com
-            $user .= (isset($parts['pass']) && $parts['pass'] != '') ? ':' . $parts['pass'] . '@' : '@';
-        }
-
-        $host = (isset($parts['host'])) ? $parts['host'] : '';
-        $port = (isset($parts['port']) && $parts['port'] != '') ? ':' . $parts['port'] : '';
-        $path = (isset($parts['path']) && $parts['path'] != '') ? $parts['path'] : '';
-
-        // handle URL params which are existing / new
-        $params = ($params) ? '?' . http_build_query($params, null, $separator) : '';
-
-        // keep fragments (anchors) intact.
-        $fragment = (isset($parts['fragment']) && $parts['fragment'] != '') ? '#' . $parts['fragment'] : '';
-
-        // Recompile URI segments
-        $newUri = $scheme . '://' . $user . $host . $port . $path . $params . $fragment;
-
-        if ($isRelative) {
-            return str_replace('http://dummy.com/', '', $newUri);
-        }
-
-        return $newUri;
-    }
-
-    /**
-     * @param string $url
-     * @return bool
-     */
-    public static function is_absolute_url(string $url): bool
-    {
-        // Strip off the query and fragment parts of the URL before checking
-        if (($queryPosition = strpos($url, '?')) !== false) {
-            $url = substr($url, 0, $queryPosition - 1);
-        }
-        if (($hashPosition = strpos($url, '#')) !== false) {
-            $url = substr($url, 0, $hashPosition - 1);
-        }
-        $colonPosition = strpos($url, ':');
-        $slashPosition = strpos($url, '/');
-        return (
-            // Base check for existence of a host on a compliant URL
-            parse_url($url, PHP_URL_HOST)
-            // Check for more than one leading slash without a protocol.
-            // While not a RFC compliant absolute URL, it is completed to a valid URL by some browsers,
-            // and hence a potential security risk. Single leading slashes are not an issue though.
-            || preg_match('%^\s*/{2,}%', $url)
-            || (
-                // If a colon is found, check if it's part of a valid scheme definition
-                // (meaning its not preceded by a slash).
-                $colonPosition !== false
-                && ($slashPosition === false || $colonPosition < $slashPosition)
-            )
-        );
     }
 }

@@ -24,7 +24,8 @@
         "psr-4": {
             "Lifeboat\\SDK\\": "src",
             "Lifeboat\\SDK\\Services\\": "src/services",
-            "Lifeboat\\SDK\\Exceptions\\": "src/exceptions"
+            "Lifeboat\\SDK\\Exceptions\\": "src/exceptions",
+            "Lifeboat\\SDK\\Utils\\": "src/utils"
         }
     },
     "require": {
