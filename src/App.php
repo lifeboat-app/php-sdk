@@ -9,26 +9,66 @@ use Lifeboat\Utils\Utils;
 /**
  * Class App
  * @package Lifeboat
- *
- * @property string $_app_id
- * @property string $_app_secret
- * @property string $_app_challenge
- * @property string $_code
  */
 class App extends Connector {
 
     const CODE_URL = '/oauth/code';
 
-    private $_app_id        = '';
-    private $_app_secret    = '';
-    private $_api_challenge = '';
-    private $_code          = '';
+    private string $_app_id;
+    private string $_app_secret;
+    private string $_api_challenge;
 
-    public function __construct(string $_app_id, string $_app_secret, $_auth_domain = self::AUTH_DOMAIN)
+    public function __construct(string $app_id, string $app_secret, $auth_domain = self::AUTH_DOMAIN)
     {
-        $this->_app_id      = $_app_id;
-        $this->_app_secret  = $_app_secret;
-        $this->_auth_domain = rtrim($_auth_domain, '/');
+        $this->setAppID($app_id);
+        $this->setAppSecret($app_secret);
+        $this->_auth_domain = rtrim($auth_domain, '/');
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppID(): string
+    {
+        return $this->_app_id;
+    }
+
+    /**
+     * @param string $id
+     * @return $this
+     */
+    public function setAppID(string $id): App
+    {
+        $this->_app_id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppSecret(): string
+    {
+        return $this->_app_secret;
+    }
+
+    /**
+     * @param string $token
+     * @return $this
+     */
+    public function setAccessToken(string $token): App
+    {
+        $this->_access_token = $token;
+        return $this;
+    }
+
+    /**
+     * @param string $secret
+     * @return $this
+     */
+    public function setAppSecret(string $secret): App
+    {
+        $this->_app_secret = $secret;
+        return $this;
     }
 
     /**
@@ -53,28 +93,28 @@ class App extends Connector {
     /**
      * @param string $process_url
      * @param string $error_url
+     * @param string $challenge
      * @return string
      */
-    public function getAuthURL(string $process_url, string $error_url): string
+    public function getAuthURL(string $process_url, string $error_url, string $challenge): string
     {
         $url    = URL::setGetVar('app_id', $this->getAppID(), $this->auth_url(self::CODE_URL));
         $url    = URL::setGetVar('process_url', urlencode($process_url), $url);
         $url    = URL::setGetVar('error_url', urlencode($error_url), $url);
 
-        return URL::setGetVar('challenge', Utils::pack($this->getAPIChallenge()), $url);
+        return URL::setGetVar('challenge', Utils::pack($challenge), $url);
     }
 
     /**
-     * @param string $secret
      * @param string $code
      * @return string
      */
-    public function fetchAccessToken(string $secret, string $code): string
+    public function fetchAccessToken(string $code): string
     {
         $curl = new Curl($this->auth_url(self::TOKEN_URL), [
             'challenge'     => $this->getAPIChallenge(),
             'code'          => $code,
-            'app_secret'    => $secret
+            'app_secret'    => $this->getAppSecret()
         ]);
 
         $curl->setMethod('POST');
@@ -91,20 +131,8 @@ class App extends Connector {
     /**
      * @return string
      */
-    public function getAppID(): string
-    {
-        return $this->_app_id;
-    }
-
-    /**
-     * @return string
-     */
     public function getAccessToken(): string
     {
-        if (!$this->_access_token) {
-            $this->_access_token = $this->fetchAccessToken($this->_app_secret, $this->_code);
-        }
-
         return $this->_access_token;
     }
 }

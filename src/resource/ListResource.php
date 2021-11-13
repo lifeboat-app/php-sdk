@@ -11,9 +11,6 @@ use Generator;
 /**
  * Class ResourceList
  * @package Lifeboat\Resource
- *
- * @property string $_url
- * @property array $_items
  */
 class ListResource extends ApiResource implements IteratorAggregate {
 
@@ -21,14 +18,40 @@ class ListResource extends ApiResource implements IteratorAggregate {
     const PAGE_PARAM    = 'page';
     const LIMIT_PARAM   = 'limit';
 
-    private $_url           = '';
-    private $_items         = [];
-    private $_max_items     = 0;
+    private string $_url;
+    private array $_params;
+    private array $_items;
+    private int $_max_items;
 
-    public function __construct(Connector $connector, string $url)
+    /**
+     * ListResource constructor.
+     * @param Connector $client
+     * @param string $url
+     * @param array $params
+     */
+    public function __construct(Connector $client, string $url, array $params = [])
     {
-        $this->setClient($connector);
+        parent::__construct($client);
         $this->setURL($url);
+        $this->setParams($params);
+    }
+
+    /**
+     * @param array $params
+     * @return $this
+     */
+    public function setParams(array $params = []): ListResource
+    {
+        $this->_params = $params;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->_params;
     }
 
     /**

@@ -14,8 +14,8 @@ use Lifeboat\Utils\Curl;
  */
 class Client extends Connector {
 
-    private $_api_key = '';
-    private $_api_secret = '';
+    private string $_api_key;
+    private string $_api_secret;
 
     public function __construct(string $_api_key, string $_api_secret, $_auth_domain = self::AUTH_DOMAIN)
     {

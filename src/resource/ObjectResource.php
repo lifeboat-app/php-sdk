@@ -12,11 +12,17 @@ use Lifeboat\Connector;
  */
 class ObjectResource extends ApiResource {
 
-    private $_object_data   = [];
+    private array $_object_data;
 
-    public function __construct(Connector $connector, array $_object_data = [])
+    /**
+     * ObjectResource constructor.
+     * @param Connector $client
+     * @param array $_object_data
+     */
+    public function __construct(Connector $client, array $_object_data = [])
     {
-        $this->setClient($connector);
+        parent::__construct($client);
+
         foreach ($_object_data as $k => $v) {
             $this->__set($k, $v);
         }

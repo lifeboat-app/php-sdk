@@ -12,22 +12,31 @@ use Lifeboat\Connector;
  */
 abstract class ApiResource implements \ArrayAccess, \Countable {
 
-    private $_client;
+    private Connector $_client;
 
     /**
-     * @param Connector $_client
+     * ApiResource constructor.
+     * @param Connector $client
+     */
+    public function __construct(Connector $client)
+    {
+        $this->setClient($client);
+    }
+
+    /**
+     * @param Connector $client
      * @return $this
      */
-    public function setClient(Connector $_client): ApiResouce
+    public function setClient(Connector $client): ApiResource
     {
-        $this->_client = $_client;
+        $this->_client = $client;
         return $this;
     }
 
     /**
-     * @return Connector
+     * @return Connector|null
      */
-    public function getClient(): Connector
+    public function getClient(): ?Connector
     {
         return $this->_client;
     }

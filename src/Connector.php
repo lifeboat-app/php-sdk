@@ -23,10 +23,10 @@ abstract class Connector {
     const TOKEN_URL     = '/oauth/token';
     const SITES_URL     = '/oauth/sites';
 
-    protected $_auth_domain     = 'https://accounts.lifeboat.app';
-    protected $_access_token    = null;
-    protected $_site_key        = '';
-    protected $_host            = '';
+    protected string $_auth_domain = 'https://accounts.lifeboat.app';
+    protected string $_access_token;
+    protected string $_site_key;
+    protected string $_host;
 
     /**
      * @return string
@@ -79,6 +79,19 @@ abstract class Connector {
     {
         $this->_access_token = null;
         $this->getAccessToken();
+        return $this;
+    }
+
+    /**
+     * @param string $host
+     * @param string $site_key
+     * @return $this
+     */
+    public function setActiveSite(string $host, string $site_key): Connector
+    {
+        $this->_host        = $host;
+        $this->_site_key    = $site_key;
+
         return $this;
     }
 
