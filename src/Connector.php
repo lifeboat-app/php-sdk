@@ -7,6 +7,7 @@ use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Model;
 use Lifeboat\Services\ObjectFactory;
 use Lifeboat\Utils\Curl;
+use Lifeboat\Utils\URL;
 
 /**
  * Class Connector
@@ -20,13 +21,12 @@ use Lifeboat\Utils\Curl;
 abstract class Connector {
 
     const AUTH_DOMAIN   = 'https://accounts.lifeboat.app';
-    const TOKEN_URL     = '/oauth/token';
     const SITES_URL     = '/oauth/sites';
 
     protected string $_auth_domain = 'https://accounts.lifeboat.app';
-    protected string $_access_token;
-    protected string $_site_key;
-    protected string $_host;
+    protected string $_access_token = '';
+    protected string $_site_key = '';
+    protected string $_host = '';
 
     /**
      * @return string
@@ -62,7 +62,8 @@ abstract class Connector {
         $response = $curl->curl();
 
         if (!$response->isValid()) {
-            throw new OAuthException($response->getRaw());
+            $error = $response->getJSON();
+            throw new OAuthException($error['error'], $error['code']);
         }
 
         return $response->getJSON();
@@ -105,6 +106,9 @@ abstract class Connector {
      */
     public function curl_api(string $url, string $method = 'GET', array $data = [], array $headers = []): CurlResponse
     {
+        $url = URL::is_absolute_url($url) ? $url
+            : 'https://' . rtrim($this->_host, '/') . '/' . ltrim($url, '/');
+
         $curl = new Curl($url, $data, $headers);
 
         $curl->setMethod($method);

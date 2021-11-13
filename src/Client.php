@@ -34,7 +34,7 @@ class Client extends Connector {
     public function getAccessToken(): string
     {
         if (!$this->_access_token) {
-            $curl = new Curl($this->auth_url(self::TOKEN_URL), [
+            $curl = new Curl($this->auth_url('/oauth/api_token'), [
                 'api_key'       => $this->getAPIKey(),
                 'api_secret'    => $this->getAPISecret()
             ]);
@@ -43,7 +43,8 @@ class Client extends Connector {
             $response = $curl->curl();
 
             if (!$response->isValid()) {
-                throw new OAuthException($response->getRaw());
+                $error = $response->getJSON();
+                throw new OAuthException($error['error'], $error['code']);
             }
 
             $json = $response->getJSON();

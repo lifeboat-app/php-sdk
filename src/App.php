@@ -111,7 +111,7 @@ class App extends Connector {
      */
     public function fetchAccessToken(string $code): string
     {
-        $curl = new Curl($this->auth_url(self::TOKEN_URL), [
+        $curl = new Curl($this->auth_url('/oauth/token'), [
             'challenge'     => $this->getAPIChallenge(),
             'code'          => $code,
             'app_secret'    => $this->getAppSecret()

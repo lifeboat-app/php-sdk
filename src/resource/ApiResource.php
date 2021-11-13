@@ -3,6 +3,8 @@
 namespace Lifeboat\Resource;
 
 use Lifeboat\Connector;
+use ArrayAccess;
+use Countable;
 
 /**
  * Class ApiResource
@@ -10,7 +12,7 @@ use Lifeboat\Connector;
  *
  * @property Connector|null $_client
  */
-abstract class ApiResource implements \ArrayAccess, \Countable {
+abstract class ApiResource implements ArrayAccess, Countable {
 
     private Connector $_client;
 

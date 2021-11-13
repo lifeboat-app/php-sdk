@@ -12,8 +12,8 @@ namespace Lifeboat;
 class CurlResponse
 {
 
-    private $http_code  = 0;
-    private $result     = '';
+    private int $http_code;
+    private string $result;
 
     public function __construct($http_code, $result)
     {
@@ -63,7 +63,7 @@ class CurlResponse
      */
     public function getErrors(): array
     {
-        return ($this->isJSON()) ? $this->getJSON()->errors : [['error' => $this->getRaw(), 'field' => '']];
+        return ($this->isJSON()) ? $this->getJSON()['errors'] : [['error' => $this->getRaw(), 'field' => '']];
     }
 
     public function getRaw()

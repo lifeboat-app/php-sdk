@@ -3,6 +3,8 @@
 namespace Lifeboat\Resource;
 
 use Lifeboat\Connector;
+use IteratorAggregate;
+use ArrayIterator;
 
 /**
  * Class ResourceList
@@ -10,7 +12,7 @@ use Lifeboat\Connector;
  *
  * @property array $_object_data
  */
-class ObjectResource extends ApiResource {
+class ObjectResource extends ApiResource implements IteratorAggregate {
 
     private array $_object_data;
 
@@ -35,6 +37,14 @@ class ObjectResource extends ApiResource {
     public function __get(string $field)
     {
         return $this->_object_data[$field] ?? null;
+    }
+
+    /**
+     * @return ArrayIterator
+     */
+    public function getIterator(): ArrayIterator
+    {
+        return new ArrayIterator($this->_object_data);
     }
 
     /**

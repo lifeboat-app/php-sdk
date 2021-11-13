@@ -4,36 +4,53 @@ namespace Lifeboat\Resource;
 
 use Lifeboat\Connector;
 use Lifeboat\Exceptions\OAuthException;
+use Lifeboat\Models\Model;
 use Lifeboat\Services\ObjectFactory;
 use IteratorAggregate;
 use Generator;
 
 /**
  * Class ResourceList
+ *
+ * This class performs some serious magic.
+ *
+ * It calls the api in a paginated fashion however, it will keep
+ * calling the next page automatically until it meets the end of the list,
+ * or if the search index is found.
+ *
+ * Similar to how an infinite scroll would work, if a REST API version of it would exist.
+ *
+ * This is done so that we don't overwhelm one API server with humongous requests
+ * if the developer needs to access a full list of objects.
+ *
  * @package Lifeboat\Resource
  */
 class ListResource extends ApiResource implements IteratorAggregate {
 
-    const PAGE_LENGTH   = 20;
     const PAGE_PARAM    = 'page';
     const LIMIT_PARAM   = 'limit';
 
-    private string $_url;
-    private array $_params;
-    private array $_items;
-    private int $_max_items;
+    private string $_url = '';
+    private array $_params = [];
+    private array $_items = [];
+    private int $_max_items = 0;
+
+    private int $_page_length;
 
     /**
      * ListResource constructor.
      * @param Connector $client
      * @param string $url
      * @param array $params
+     * @param int $page_length
      */
-    public function __construct(Connector $client, string $url, array $params = [])
+    public function __construct(Connector $client, string $url, array $params = [], int $page_length = 20)
     {
         parent::__construct($client);
         $this->setURL($url);
         $this->setParams($params);
+
+        $this->_page_length = $page_length;
     }
 
     /**
@@ -80,13 +97,17 @@ class ListResource extends ApiResource implements IteratorAggregate {
     public function getItems(int $page = 1): array
     {
         if (!array_key_exists($page, $this->_items)) {
-            $response = $this->getClient()->curl_api($this->getURL(), 'GET', [
-                self::PAGE_PARAM    => $page,
-                self::LIMIT_PARAM   => self::PAGE_LENGTH
-            ]);
+            $data = $this->getParams();
 
-            $data = ($response->isValid() && $response->isJSON()) ? $response->getJSON() : [];
-            $this->_max_items = $data['available_items'];
+            $data[self::PAGE_PARAM]     = $page;
+            $data[self::LIMIT_PARAM]    = $this->_page_length;
+
+            $response   = $this->getClient()->curl_api($this->getURL(), 'GET', $data);
+            $data       = ($response->isValid() && $response->isJSON()) ? $response->getJSON() : [];
+
+            $this->_max_items = (int) $data['available_items'];
+
+            if (empty($data['items'])) return $this->_items[$page] = [];
 
             foreach ($data['items'] as $item) {
                 $obj = ObjectFactory::make($this->getClient(), $item);
@@ -102,70 +123,96 @@ class ListResource extends ApiResource implements IteratorAggregate {
     /**
      * @param mixed $offset
      * @return ObjectResource|null
-     * @throws OAuthException
      */
     public function offsetGet($offset): ?ObjectResource
     {
-        return $this->getItems()[$offset] ?? null;
+        foreach ($this as $i => $obj) if ($i === $offset) return $obj;
+        return null;
     }
 
     /**
      * @param mixed $offset
      * @param mixed $value
-     * @throws OAuthException
      */
     public function offsetSet($offset, $value)
     {
-        $this->getItems()[$offset] = $value;
+        // Do nothing, this is only a reflection object
     }
 
     /**
      * @return int
+     * @throws OAuthException
      */
     public function count(): int
     {
+        // Make sure to load the objects first
+        $this->getItems(1);
+
         return $this->_max_items;
     }
 
     /**
      * @param mixed $offset
      * @return bool
-     * @throws OAuthException
      */
     public function offsetExists($offset): bool
     {
-        return array_key_exists($offset, $this->getItems());
+        foreach ($this as $i => $obj) if ($offset === $i) return true;
+        return false;
     }
 
     /**
      * @param mixed $offset
-     * @throws OAuthException
      */
     public function offsetUnset($offset)
     {
-        unset($this->getItems()[$offset]);
+        // Do nothing, we cannot modify a reflection object
     }
 
     /**
+     * Traverse the objects in chunks as not to overwhelm the API
+     *
+     * IMPORTANT:
+     * If you're reading this and have no clue what on earth is going on...
+     * DON'T TOUCH IT!
+     *
+     * The person who wrote this enjoys PHP in a really sadistic way,
+     * so much so that he even used 1 letter variable names.
+     *
+     * This was done to ensure you don't touch this function.
+     * Just enjoy using it and trust in the magic.
+     *
      * @return Generator
+     * @throws OAuthException If client has a problem connecting to the API
      */
     public function getIterator(): Generator
     {
-        return (function () {
+        $t = $this->getItems(1);
+        $c = $this->count();
+
+        return (function () use ($t, $c) {
             $i = 0;
             $x = 0;
-            $m = $this->count();
 
-            while ($i < $m) {
+            while ($i < $c) {
                 if ($x === 0) {
-                    $x = self::PAGE_LENGTH;
-                    $t = $this->getItems(ceil($i / self::PAGE_LENGTH));
+                    $x = $this->_page_length;
+                    $t = $this->getItems(floor($i / $this->_page_length) + 1);
                 }
 
-                yield $i => $t[self::PAGE_LENGTH - $x];
+                yield $i => $t[$this->_page_length - $x];
 
                 $x -= 1;
+                $i ++;
             }
         })();
+    }
+
+    /**
+     * @return Model|null
+     */
+    public function first(): ?Model
+    {
+        foreach ($this as $obj) return $obj;
     }
 }
