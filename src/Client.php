@@ -1,24 +1,21 @@
 <?php
 
-namespace Lifeboat\SDK;
+namespace Lifeboat;
 
-use Lifeboat\SDK\Exceptions\OAuthException;
-use Lifeboat\SDK\Services\Curl;
+use Lifeboat\Exceptions\OAuthException;
+use Lifeboat\Utils\Curl;
 
 /**
  * Class Client
- * @package Lifeboat\SDK
+ * @package Lifeboat
+ *
+ * @property string $_api_key
+ * @property string $_api_secret
  */
-class Client {
+class Client extends Connector {
 
-    const AUTH_DOMAIN   = 'https://accounts.lifeboat.app';
-    const TOKEN_URL     = '/oauth/api_token';
-    const SITES_URL     = '/oauth/sites';
-
-    private $_auth_domain = '';
     private $_api_key = '';
     private $_api_secret = '';
-    private $_access_token;
 
     public function __construct(string $_api_key, string $_api_secret, $_auth_domain = self::AUTH_DOMAIN)
     {
@@ -61,43 +58,6 @@ class Client {
     }
 
     /**
-     * @param string $access_token
-     * @return array
-     * @throws OAuthException
-     */
-    public function getSites(string $access_token = ''): array
-    {
-        if (!$access_token) $access_token = $this->getAccessToken();
-
-        $curl = new Curl($this->auth_url(self::SITES_URL), [
-            'access_token' => $access_token
-        ]);
-
-        $curl->setMethod('POST');
-        $response = $curl->curl();
-
-        if (!$response->isValid()) {
-            throw new OAuthException($response->getRaw());
-        }
-
-        return $response->getJSON();
-    }
-
-    /**
-     * Makes a request to the API to refresh the current access token
-     * @see Client::getAccessToken()
-     *
-     * @return $this
-     * @throws OAuthException
-     */
-    public function refreshAccessToken(): Client
-    {
-        $this->_access_token = null;
-        $this->getAccessToken();
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getAPIKey(): string
@@ -111,14 +71,5 @@ class Client {
     public function getAPISecret(): string
     {
         return $this->_api_secret;
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    private function auth_url(string $path): string
-    {
-        return $this->_auth_domain . '/' . ltrim($path, '/');
     }
 }

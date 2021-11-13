@@ -1,15 +1,15 @@
 <?php
 
-namespace Lifeboat\SDK\Services;
+namespace Lifeboat\Utils;
 
-use Lifeboat\SDK\CurlResponse;
-use Lifeboat\SDK\Exceptions\InvalidArgumentException;
-use Lifeboat\SDK\Utils\URL;
+use Lifeboat\CurlResponse;
+use Lifeboat\Exceptions\InvalidArgumentException;
+use Lifeboat\Utils\URL;
 use LogicException;
 
 /**
  * Class Curl
- * @package Lifeboat\SDK
+ * @package Lifeboat
  */
 class Curl {
 

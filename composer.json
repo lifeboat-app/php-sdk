@@ -22,17 +22,22 @@
     ],
     "autoload": {
         "psr-4": {
-            "Lifeboat\\SDK\\": "src",
-            "Lifeboat\\SDK\\Services\\": "src/services",
-            "Lifeboat\\SDK\\Exceptions\\": "src/exceptions",
-            "Lifeboat\\SDK\\Utils\\": "src/utils"
+            "Lifeboat\\": "src",
+            "Lifeboat\\Services\\": "src/services",
+            "Lifeboat\\Exceptions\\": "src/exceptions",
+            "Lifeboat\\Utils\\": "src/utils",
+            "Lifeboat\\Traits\\": "src/traits",
+            "Lifeboat\\Interfaces\\": "src/interfaces",
+            "Lifeboat\\Resource\\": "src/resource",
+            "Lifeboat\\Models\\": "src/models",
+            "Lifeboat\\Lists\\": "src/lists"
         }
     },
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.2.0",
         "ext-json": "*",
         "ext-curl": "*",
-        "guzzlehttp/promises": ">=1.4"
+        "guzzlehttp/promises": ">=1.5"
     },
     "prefer-stable": true,
     "minimum-stability": "dev"

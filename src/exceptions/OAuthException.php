@@ -1,5 +1,5 @@
 <?php
 
-namespace Lifeboat\SDK\Exceptions;
+namespace Lifeboat\Exceptions;
 
 class OAuthException extends \ErrorException {}

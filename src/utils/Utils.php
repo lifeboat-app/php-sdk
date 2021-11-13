@@ -1,6 +1,6 @@
 <?php
 
-namespace Lifeboat\SDK\Utils;
+namespace Lifeboat\Utils;
 
 class Utils {
 

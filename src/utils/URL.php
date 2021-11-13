@@ -1,12 +1,12 @@
 <?php
 
-namespace Lifeboat\SDK\Utils;
+namespace Lifeboat\Utils;
 
-use Lifeboat\SDK\Exceptions\InvalidArgumentException;
+use Lifeboat\Exceptions\InvalidArgumentException;
 
 /**
  * Class URL
- * @package Lifeboat\SDK\Utils
+ * @package Lifeboat\Utils
  */
 class URL {
 

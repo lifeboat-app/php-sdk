@@ -1,31 +1,33 @@
 <?php
 
-namespace Lifeboat\SDK;
+namespace Lifeboat;
 
-use GuzzleHttp\Promise\Promise;
-use Lifeboat\SDK\Exceptions\OAuthException;
-use Lifeboat\SDK\Services\Curl;
-use Lifeboat\SDK\Utils\URL;
-use Lifeboat\SDK\Utils\Utils;
+use Lifeboat\Utils\Curl;
+use Lifeboat\Utils\URL;
+use Lifeboat\Utils\Utils;
 
 /**
  * Class App
- * @package Lifeboat\SDK
+ * @package Lifeboat
+ *
+ * @property string $_app_id
+ * @property string $_app_secret
+ * @property string $_app_challenge
+ * @property string $_code
  */
-class App {
+class App extends Connector {
 
-    const AUTH_DOMAIN   = 'https://accounts.lifeboat.app';
-    const CODE_URL      = '/oauth/code';
-    const TOKEN_URL     = '/oauth/token';
-    const SITES_URL     = '/oauth/sites';
+    const CODE_URL = '/oauth/code';
 
-    private $_auth_domain = '';
-    private $_app_id = '';
+    private $_app_id        = '';
+    private $_app_secret    = '';
     private $_api_challenge = '';
+    private $_code          = '';
 
-    public function __construct(string $_app_id, $_auth_domain = self::AUTH_DOMAIN)
+    public function __construct(string $_app_id, string $_app_secret, $_auth_domain = self::AUTH_DOMAIN)
     {
-        $this->_app_id = $_app_id;
+        $this->_app_id      = $_app_id;
+        $this->_app_secret  = $_app_secret;
         $this->_auth_domain = rtrim($_auth_domain, '/');
     }
 
@@ -65,10 +67,9 @@ class App {
     /**
      * @param string $secret
      * @param string $code
-     * @param Promise $promise
-     * @return $this
+     * @return string
      */
-    public function getAccessToken(string $secret, string $code, Promise $promise): App
+    public function fetchAccessToken(string $secret, string $code): string
     {
         $curl = new Curl($this->auth_url(self::TOKEN_URL), [
             'challenge'     => $this->getAPIChallenge(),
@@ -81,33 +82,10 @@ class App {
         $json = $response->getJSON();
 
         if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
-            $promise->reject($response->getRaw());
+            return $json['access_token'];
         } else {
-            $promise->resolve($json['access_token']);
+            return '';
         }
-
-        return $this;
-    }
-
-    /**
-     * @param string $access_token
-     * @return array
-     * @throws OAuthException
-     */
-    public function getSites(string $access_token): array
-    {
-        $curl = new Curl($this->auth_url(self::SITES_URL), [
-            'access_token' => $access_token
-        ]);
-
-        $curl->setMethod('POST');
-        $response = $curl->curl();
-
-        if (!$response->isValid()) {
-            throw new OAuthException($response->getRaw());
-        }
-
-        return $response->getJSON();
     }
 
     /**
@@ -119,11 +97,14 @@ class App {
     }
 
     /**
-     * @param string $path
      * @return string
      */
-    private function auth_url(string $path): string
+    public function getAccessToken(): string
     {
-        return $this->_auth_domain . '/' . ltrim($path, '/');
+        if (!$this->_access_token) {
+            $this->_access_token = $this->fetchAccessToken($this->_app_secret, $this->_code);
+        }
+
+        return $this->_access_token;
     }
 }

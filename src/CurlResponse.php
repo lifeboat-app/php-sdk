@@ -1,13 +1,13 @@
 <?php
 
-namespace Lifeboat\SDK;
+namespace Lifeboat;
 
 /**
  * Class CurlResponse
  *
  * Wrapper class for responses from the API / Oauth service
  *
- * @package Lifeboat\SDK
+ * @package Lifeboat
  */
 class CurlResponse
 {
