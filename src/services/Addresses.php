@@ -3,10 +3,9 @@
 namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
-use Lifeboat\Exceptions\InvalidArgumentException;
+use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Address;
-use Lifeboat\Models\Order;
 use Lifeboat\Resource\ListResource;
 
 /**
@@ -17,21 +16,51 @@ class Addresses extends ApiService {
 
     /**
      * @param int $id
-     * @return Order|null
+     * @return Address|null
      * @throws ApiException
      * @throws OAuthException
-     * @throws InvalidArgumentException If param $id is less than 1
      */
-    public function fetch(int $id = -1): ?Address
+    public function fetch(int $id): ?Address
     {
-        $class = get_called_class();
-        if ($id <= 0) {
-            throw new InvalidArgumentException("{$class}::fetch() expects parameter 1 to be a positive integer");
-        }
+        /** @var Address|null $address */
+        $address = $this->_get('api/addresses/address' . $id);
+        return $address;
+    }
 
-        /** @var Address|null $order */
-        $order = $this->retrieve('api/addresses/address/' . $id);
-        return $order;
+    /**
+     * @param array $data
+     * @return Address|null
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    public function create(array $data): ?Address
+    {
+        /** @var Address|null $address */
+        $address = $this->_post('api/addresses/address', $data);
+        return $address;
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return Address|null
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    public function update(int $id, array $data): ?Address
+    {
+        /** @var Address|null $address */
+        $address = $this->_post('api/addresses/address/' . $id, $data);
+        return $address;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        throw new BadMethodException("Addresses cannot be deleted");
     }
 
     /**

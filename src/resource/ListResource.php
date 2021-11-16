@@ -8,6 +8,8 @@ use Lifeboat\Models\Model;
 use Lifeboat\Factory\ObjectFactory;
 use IteratorAggregate;
 use Generator;
+use ArrayAccess;
+use Countable;
 
 /**
  * Class ResourceList
@@ -24,8 +26,9 @@ use Generator;
  * if the developer needs to access a full list of objects.
  *
  * @package Lifeboat\Resource
+ * @property Connector $_client
  */
-class ListResource extends ApiResource implements IteratorAggregate {
+class ListResource implements IteratorAggregate, ArrayAccess, Countable {
 
     const PAGE_PARAM    = 'page';
     const LIMIT_PARAM   = 'limit';
@@ -36,6 +39,7 @@ class ListResource extends ApiResource implements IteratorAggregate {
     private int $_max_items = 0;
 
     private int $_page_length;
+    private Connector $_client;
 
     /**
      * ListResource constructor.
@@ -46,11 +50,29 @@ class ListResource extends ApiResource implements IteratorAggregate {
      */
     public function __construct(Connector $client, string $url, array $params = [], int $page_length = 20)
     {
-        parent::__construct($client);
+        $this->setClient($client);
         $this->setURL($url);
         $this->setParams($params);
 
         $this->_page_length = $page_length;
+    }
+
+    /**
+     * @param Connector $client
+     * @return $this
+     */
+    public function setClient(Connector $client): ListResource
+    {
+        $this->_client = $client;
+        return $this;
+    }
+
+    /**
+     * @return Connector
+     */
+    public function getClient(): Connector
+    {
+        return $this->_client;
     }
 
     /**

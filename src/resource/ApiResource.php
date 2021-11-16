@@ -5,16 +5,19 @@ namespace Lifeboat\Resource;
 use Lifeboat\Connector;
 use ArrayAccess;
 use Countable;
+use Lifeboat\Services\ApiService;
 
 /**
  * Class ApiResource
  * @package Lifeboat\Resource
  *
- * @property Connector|null $_client
+ * @property Connector $_client
  */
 abstract class ApiResource implements ArrayAccess, Countable {
 
     private Connector $_client;
+
+    abstract public function getService(): ApiService;
 
     /**
      * ApiResource constructor.

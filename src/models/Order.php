@@ -2,8 +2,6 @@
 
 namespace Lifeboat\Models;
 
-use Lifeboat\Exceptions\ApiException;
-use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Resource\ObjectResource;
 use Lifeboat\Services\Orders;
 
@@ -60,17 +58,11 @@ class Order extends Model {
     }
 
     /**
-     * @see Model::write()
-     *
-     * @return Order|null
-     * @throws ApiException
-     * @throws OAuthException
+     * @return Orders
      */
-    public function save(): ?Order
+    public function getService(): Orders
     {
-        /** @var Order|null $order */
-        $order = $this->write('api/orders/order/' . $this->ID);
-        return $order;
+        return new Orders($this->getClient());
     }
 
     /**

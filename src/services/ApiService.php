@@ -20,11 +20,10 @@ abstract class ApiService {
     /** @var Connector $client */
     protected Connector $client;
 
-    /**
-     * @param int $id
-     * @return Model|null
-     */
-    abstract public function fetch(int $id = -1): ?Model;
+    abstract public function fetch(int $id): ?Model;
+    abstract public function create(array $data): ?Model;
+    abstract public function delete(int $id): bool;
+    abstract public function update(int $id, array $data): ?Model;
 
     public function __construct(Connector $client)
     {
@@ -59,13 +58,47 @@ abstract class ApiService {
      * @throws ApiException
      * @throws OAuthException
      */
-    protected function retrieve(string $url, array $params = []): ?ApiResource
+    protected function _get(string $url, array $params = []): ?ApiResource
     {
         $curl = $this->getClient()->curl_api($url, 'GET', $params);
 
         if ($curl->isValid() && $curl->isJSON()) {
             return ObjectFactory::make($this->getClient(), $curl->getJSON());
         }
+
+        throw new ApiException($curl->getError());
+    }
+
+    /**
+     * @param string $url
+     * @param array $params
+     * @return ApiResource|null
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    protected function _post(string $url, array $params = []): ?ApiResource
+    {
+        $curl = $this->getClient()->curl_api($url, 'POST', $params);
+
+        if ($curl->isValid() && $curl->isJSON()) {
+            return ObjectFactory::make($this->getClient(), $curl->getJSON());
+        }
+
+        throw new ApiException($curl->getError());
+    }
+
+    /**
+     * @param string $url
+     * @param array $params
+     * @return bool
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    protected function _delete(string $url, array $params = []): bool
+    {
+        $curl = $this->getClient()->curl_api($url, 'DELETE', $params);
+
+        if ($curl->isValid()) return true;
 
         throw new ApiException($curl->getError());
     }

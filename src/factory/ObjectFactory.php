@@ -3,9 +3,7 @@
 namespace Lifeboat\Factory;
 
 use Lifeboat\Connector;
-use Lifeboat\Models\Address;
 use Lifeboat\Models\Model;
-use Lifeboat\Models\Order;
 use Lifeboat\Resource\ObjectResource;
 
 /**
@@ -13,11 +11,6 @@ use Lifeboat\Resource\ObjectResource;
  * @package Lifeboat\Services
  */
 class ObjectFactory {
-
-    const CLASS_MAP = [
-        'order'     => Order::class,
-        'address'   => Address::class
-    ];
 
     /**
      * @param Connector $connector
@@ -28,9 +21,9 @@ class ObjectFactory {
     public static function create(Connector $connector, string $model, array $data = []): ?Model
     {
         $model = strtolower($model);
-        if (!array_key_exists($model, self::CLASS_MAP)) return null;
+        if (!array_key_exists($model, ClassMap::MODELS)) return null;
 
-        $cls = self::CLASS_MAP[$model];
+        $cls = ClassMap::MODELS[$model];
         return new $cls($connector, $data);
     }
 

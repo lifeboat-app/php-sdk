@@ -12,7 +12,7 @@ use ArrayIterator;
  *
  * @property array $_object_data
  */
-class ObjectResource extends ApiResource implements IteratorAggregate {
+abstract class ObjectResource extends ApiResource implements IteratorAggregate {
 
     protected static array $casting = [];
 
@@ -28,7 +28,7 @@ class ObjectResource extends ApiResource implements IteratorAggregate {
         parent::__construct($client);
 
         foreach ($_object_data as $k => $v) {
-            if ($v && array_key_exists($k, static::$casting)) {
+            if (!is_null($v) && array_key_exists($k, static::$casting)) {
                 $cls_func = static::$casting[$k];
                 $v = (class_exists($cls_func)) ? new $cls_func($v) : $cls_func($v);
             }

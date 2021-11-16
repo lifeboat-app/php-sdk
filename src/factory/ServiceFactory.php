@@ -11,11 +11,6 @@ use Lifeboat\Services\ApiService;
  */
 class ServiceFactory {
 
-    const CLASS_MAP = [
-        'orders'    => \Lifeboat\Services\Orders::class,
-        'addresses' => \Lifeboat\Services\Addresses::class,
-    ];
-
     /**
      * @param Connector $connector
      * @param string $service
@@ -24,9 +19,9 @@ class ServiceFactory {
     public static function inst(Connector $connector, string $service): ?ApiService
     {
         $service = strtolower($service);
-        if (!array_key_exists($service, self::CLASS_MAP)) return null;
+        if (!array_key_exists($service, ClassMap::SERVICES)) return null;
 
-        $cls = self::CLASS_MAP[$service];
+        $cls = ClassMap::SERVICES[$service];
         return new $cls($connector);
     }
 }

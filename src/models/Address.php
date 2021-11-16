@@ -4,6 +4,8 @@ namespace Lifeboat\Models;
 
 use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
+use Lifeboat\Services\Addresses;
+use Lifeboat\Services\ApiService;
 
 /**
  * Class Address
@@ -30,7 +32,8 @@ use Lifeboat\Exceptions\OAuthException;
 class Address extends Model {
 
     protected static array $casting = [
-        'isDefault' => 'boolval'
+        'isDefault'     => 'boolval',
+        'CustomerID'    => 'intval'
     ];
 
     /**
@@ -42,21 +45,25 @@ class Address extends Model {
     }
 
     /**
-     * @see Model::write()
-     *
-     * @return Order|null
-     * @throws ApiException
-     * @throws OAuthException
+     * @return Addresses
      */
-    public function save(): ?Order
+    public function getService(): Addresses
     {
-        /** @var Order|null $order */
-        $order = $this->write('api/addresses/address/' . $this->ID);
-        return $order;
+        return new Addresses($this->getClient());
     }
 
     /**
-     * @TODO
+     * @return Customer|null
+     * @throws ApiException
+     * @throws OAuthException
      */
-    public function Customer() {}
+    public function Customer(): ?Customer
+    {
+        if (!$this->CustomerID) return null;
+
+        /** @var Customer|null $customer */
+        $customer = $this->getClient()->customers->fetch($this->CustomerID);
+
+        return $customer;
+    }
 }

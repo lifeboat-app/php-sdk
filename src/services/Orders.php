@@ -3,8 +3,10 @@
 namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
+use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Exceptions\OAuthException;
+use Lifeboat\Models\Customer;
 use Lifeboat\Models\Order;
 use Lifeboat\Resource\ListResource;
 
@@ -37,18 +39,48 @@ class Orders extends ApiService {
      * @return Order|null
      * @throws ApiException
      * @throws OAuthException
-     * @throws InvalidArgumentException If param $id is less than 1
      */
-    public function fetch(int $id = -1): ?Order
+    public function fetch(int $id): ?Order
     {
-        $class = get_called_class();
-        if ($id <= 0) {
-            throw new InvalidArgumentException("{$class}::fetch() expects parameter 1 to be a positive integer");
-        }
+        /** @var Order|null $fetch */
+        $fetch = $this->_get('api/orders/order' . $id);
+        return $fetch;
+    }
 
-        /** @var Order|null $order */
-        $order = $this->retrieve('api/orders/order/' . $id);
-        return $order;
+    /**
+     * @param array $data
+     * @return Order|null
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    public function create(array $data): ?Order
+    {
+        /** @var Order|null $create */
+        $create = $this->_post('api/orders/order', $data);
+        return $create;
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return Order|null
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    public function update(int $id, array $data): ?Order
+    {
+        /** @var Order|null $post */
+        $post = $this->_post('api/orders/order/' . $id, $data);
+        return $post;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        throw new BadMethodException("Orders cannot be deleted");
     }
 
     /**

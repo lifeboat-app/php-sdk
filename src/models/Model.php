@@ -3,9 +3,7 @@
 namespace Lifeboat\Models;
 
 use Lifeboat\Connector;
-use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\InvalidArgumentException;
-use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Resource\ObjectResource;
 use Lifeboat\Factory\ObjectFactory;
 use Lifeboat\Utils\ArrayLib;
@@ -18,7 +16,6 @@ use Lifeboat\Utils\ArrayLib;
  */
 abstract class Model extends ObjectResource {
 
-    abstract public function save(): ?Model;
     abstract public function model(): string;
 
     public function __construct(Connector $client, array $_object_data = [])
@@ -78,21 +75,14 @@ abstract class Model extends ObjectResource {
     }
 
     /**
-     * @param string $url
      * @return Model|null
-     * @throws ApiException If request/response is invalid
-     * @throws OAuthException If client has a problem connecting to API
      */
-    protected function write(string $url): ?Model
+    protected function save(): ?Model
     {
-        $curl = $this->getClient()->curl_api($url, 'POST', $this->toArray());
-
-        if ($curl->isValid() && $curl->isJSON()) {
-            /** @var Model|null $model */
-            $model = ObjectFactory::make($this->getClient(), $curl->getJSON());
-            return $model;
+        if ($this->exists()) {
+            return $this->getService()->update($this->ID, $this->toArray());
+        } else {
+            return $this->getService()->create($this->toArray());
         }
-
-        throw new ApiException($curl->getError());
     }
 }
