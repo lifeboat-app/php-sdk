@@ -5,7 +5,7 @@ namespace Lifeboat\Services;
 use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Exceptions\OAuthException;
-use Lifeboat\Models\Model;
+use Lifeboat\Models\Order;
 use Lifeboat\Resource\ListResource;
 
 /**
@@ -30,19 +30,21 @@ class Orders extends ApiService {
 
     /**
      * @param int $id
-     * @return Model|null
+     * @return Order|null
      * @throws ApiException
      * @throws OAuthException
      * @throws InvalidArgumentException If param $id is less than 1
      */
-    public function fetch(int $id = -1): ?Model
+    public function fetch(int $id = -1): ?Order
     {
         $class = get_called_class();
         if ($id <= 0) {
             throw new InvalidArgumentException("{$class}::fetch() expects parameter 1 to be a positive integer");
         }
 
-        return $this->retrieve('api/orders/order/' . $id);
+        /** @var Order|null $order */
+        $order = $this->retrieve('api/orders/order/' . $id);
+        return $order;
     }
 
     /**

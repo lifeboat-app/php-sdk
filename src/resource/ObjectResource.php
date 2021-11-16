@@ -14,6 +14,8 @@ use ArrayIterator;
  */
 class ObjectResource extends ApiResource implements IteratorAggregate {
 
+    protected static array $casting = [];
+
     private array $_object_data;
 
     /**
@@ -36,7 +38,14 @@ class ObjectResource extends ApiResource implements IteratorAggregate {
      */
     public function __get(string $field)
     {
-        return $this->_object_data[$field] ?? null;
+        $val = $this->_object_data[$field] ?? null;
+
+        if ($val && array_key_exists($field, static::$casting)) {
+            $cls_func = static::$casting[$field];
+            return (class_exists($cls_func)) ? new $cls_func($val) : $cls_func($val);
+        }
+
+        return $val;
     }
 
     /**

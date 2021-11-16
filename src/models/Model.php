@@ -19,7 +19,7 @@ use Lifeboat\Utils\ArrayLib;
  */
 abstract class Model extends ObjectResource {
 
-    abstract protected function getSaveURL(): string;
+    abstract public function save(): ?Model;
 
     public function __construct(Connector $client, array $_object_data = [])
     {
@@ -85,13 +85,14 @@ abstract class Model extends ObjectResource {
     }
 
     /**
+     * @param string $url
      * @return Model|null
-     * @throws ApiException
-     * @throws OAuthException
+     * @throws ApiException If request/response is invalid
+     * @throws OAuthException If client has a problem connecting to API
      */
-    public function save(): ?Model
+    protected function write(string $url): ?Model
     {
-        $curl = $this->getClient()->curl_api($this->getSaveURL(), 'POST', $this->toArray());
+        $curl = $this->getClient()->curl_api($url, 'POST', $this->toArray());
 
         if ($curl->isValid() && $curl->isJSON()) {
             /** @var Model|null $model */
