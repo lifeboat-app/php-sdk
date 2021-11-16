@@ -133,6 +133,6 @@ class App extends Connector {
      */
     public function getAccessToken(): string
     {
-        return $this->_access_token;
+        return $this->_access_token ?? '';
     }
 }

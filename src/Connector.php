@@ -75,7 +75,7 @@ abstract class Connector {
             throw new OAuthException($error['error'], $error['code']);
         }
 
-        return $response->getJSON();
+        return $response->getJSON() ?? [];
     }
 
     /**

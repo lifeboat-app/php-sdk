@@ -5,7 +5,6 @@ namespace Lifeboat\Models;
 use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Services\Addresses;
-use Lifeboat\Services\ApiService;
 
 /**
  * Class Address

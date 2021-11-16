@@ -219,7 +219,7 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
             while ($i < $c) {
                 if ($x === 0) {
                     $x = $this->_page_length;
-                    $t = $this->getItems(floor($i / $this->_page_length) + 1);
+                    $t = $this->getItems((int) floor($i / $this->_page_length) + 1);
                 }
 
                 yield $i => $t[$this->_page_length - $x];

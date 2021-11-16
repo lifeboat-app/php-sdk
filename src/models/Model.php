@@ -3,6 +3,7 @@
 namespace Lifeboat\Models;
 
 use Lifeboat\Connector;
+use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Resource\ObjectResource;
 use Lifeboat\Factory\ObjectFactory;
@@ -77,10 +78,14 @@ abstract class Model extends ObjectResource {
      */
     protected function save(): ?Model
     {
+        $service = $this->getService();
+
         if ($this->exists()) {
-            return $this->getService()->update($this->ID, $this->toArray());
+            if (!method_exists($service, 'update')) return $this;
+            return $service->update($this->ID, $this->toArray());
         } else {
-            return $this->getService()->create($this->toArray());
+            if (!method_exists($service, 'create')) return $this;
+            return $service->create($this->toArray());
         }
     }
 }
