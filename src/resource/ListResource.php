@@ -35,8 +35,8 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
 
     private string $_url = '';
     private array $_params = [];
-    private array $_items = [];
-    private int $_max_items = 0;
+    protected array $_items = [];
+    protected int $_max_items = 0;
 
     private int $_page_length;
     private Connector $_client;

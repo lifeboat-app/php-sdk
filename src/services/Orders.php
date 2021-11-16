@@ -3,10 +3,7 @@
 namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
-use Lifeboat\Exceptions\BadMethodException;
-use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Exceptions\OAuthException;
-use Lifeboat\Models\Customer;
 use Lifeboat\Models\Order;
 use Lifeboat\Resource\ListResource;
 
@@ -72,15 +69,6 @@ class Orders extends ApiService {
         /** @var Order|null $post */
         $post = $this->_post('api/orders/order/' . $id, $data);
         return $post;
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function delete(int $id): bool
-    {
-        throw new BadMethodException("Orders cannot be deleted");
     }
 
     /**

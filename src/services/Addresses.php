@@ -3,7 +3,6 @@
 namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
-use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Address;
 use Lifeboat\Resource\ListResource;
@@ -52,15 +51,6 @@ class Addresses extends ApiService {
         /** @var Address|null $address */
         $address = $this->_post('api/addresses/address/' . $id, $data);
         return $address;
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function delete(int $id): bool
-    {
-        throw new BadMethodException("Addresses cannot be deleted");
     }
 
     /**

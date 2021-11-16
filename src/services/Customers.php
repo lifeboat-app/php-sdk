@@ -3,7 +3,6 @@
 namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
-use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Customer;
 use Lifeboat\Resource\ListResource;
@@ -52,15 +51,6 @@ class Customers extends ApiService {
         /** @var Customer|null $post */
         $post = $this->_post('api/customers/customer/' . $id, $data);
         return $post;
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function delete(int $id): bool
-    {
-        throw new BadMethodException("Customers cannot be deleted");
     }
 
     /**

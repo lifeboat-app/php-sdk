@@ -23,6 +23,9 @@ use Lifeboat\Utils\URL;
  * @property \Lifeboat\Services\Orders $orders
  * @property \Lifeboat\Services\Addresses $addresses
  * @property \Lifeboat\Services\Customers $customers
+ * @property \Lifeboat\Services\Collections $collections
+ * @property \Lifeboat\Services\Pages $pages
+ * @property \Lifeboat\Services\CustomPages $custom_pages
  */
 abstract class Connector {
 

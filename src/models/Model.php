@@ -26,8 +26,6 @@ abstract class Model extends ObjectResource {
 
         parent::__construct($client, $_object_data);
 
-        $model = $this->model();
-
         // Mutate objects if needs be
         foreach ($this->toArray() as $field => $value) {
             if (is_array($value)) {

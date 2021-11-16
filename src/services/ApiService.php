@@ -6,7 +6,6 @@ use Lifeboat\Connector;
 use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Factory\ObjectFactory;
-use Lifeboat\Models\Model;
 use Lifeboat\Resource\ApiResource;
 
 /**
@@ -19,11 +18,6 @@ abstract class ApiService {
 
     /** @var Connector $client */
     protected Connector $client;
-
-    abstract public function fetch(int $id): ?Model;
-    abstract public function create(array $data): ?Model;
-    abstract public function delete(int $id): bool;
-    abstract public function update(int $id, array $data): ?Model;
 
     public function __construct(Connector $client)
     {

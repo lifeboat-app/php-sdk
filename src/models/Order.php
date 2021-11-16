@@ -12,8 +12,8 @@ use Lifeboat\Services\Orders;
  * @property string $Status
  * @property string $Fulfillment
  * @property string|null $DiscountCode
- * @property \DateTime|string $Created
- * @property \DateTime|string $LastModified
+ * @property \DateTime|string|null $Created
+ * @property \DateTime|string|null $LastModified
  * @property string $OID
  * @property float $Subtotal
  * @property float $Tax
@@ -21,8 +21,8 @@ use Lifeboat\Services\Orders;
  * @property float $Handling
  * @property float $Discount
  * @property float $Total
- * @property \DateTime $PaidOn
- * @property \DateTime $DeliveredOn
+ * @property \DateTime|string|null $PaidOn
+ * @property \DateTime|string|null $DeliveredOn
  * @property string $PaymentMethod
  * @property string $Provider
  * @property int $FulfillmentType

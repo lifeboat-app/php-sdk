@@ -29,7 +29,9 @@
             "Lifeboat\\Models\\": "src/models",
             "Lifeboat\\Resource\\": "src/resource",
             "Lifeboat\\Services\\": "src/services",
-            "Lifeboat\\Utils\\": "src/utils"
+            "Lifeboat\\Utils\\": "src/utils",
+            "Lifeboat\\Traits\\": "src/traits",
+            "Lifeboat\\Interfaces\\": "src/interfaces"
         }
     },
     "require": {
