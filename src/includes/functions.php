@@ -2,12 +2,16 @@
 
 /**
  * @param string $date
- * @return DateTime
- * @throws Exception
+ * @return DateTime|string
  */
-function lifeboat_date_formatter(string $date): DateTime
+function lifeboat_date_formatter(string $date)
 {
-    $date = new \DateTime($date);
-    $date->setTimezone(new DateTimeZone(DateTimeZone::EUROPE));
+    try {
+        $date = new \DateTime($date . ' CET');
+        return $date;
+    } catch (Exception $e) {
+        error_log($e);
+    }
+
     return $date;
 }

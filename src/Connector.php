@@ -2,6 +2,8 @@
 
 namespace Lifeboat;
 
+require_once 'includes/functions.php';
+
 use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Factory\ServiceFactory;
@@ -19,6 +21,7 @@ use Lifeboat\Utils\URL;
  *
  * // Services
  * @property \Lifeboat\Services\Orders $orders
+ * @property \Lifeboat\Services\Addresses $addresses
  */
 abstract class Connector {
 

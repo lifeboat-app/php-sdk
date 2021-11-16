@@ -28,6 +28,11 @@ class ObjectResource extends ApiResource implements IteratorAggregate {
         parent::__construct($client);
 
         foreach ($_object_data as $k => $v) {
+            if ($v && array_key_exists($k, static::$casting)) {
+                $cls_func = static::$casting[$k];
+                $v = (class_exists($cls_func)) ? new $cls_func($v) : $cls_func($v);
+            }
+
             $this->__set($k, $v);
         }
     }
@@ -38,14 +43,7 @@ class ObjectResource extends ApiResource implements IteratorAggregate {
      */
     public function __get(string $field)
     {
-        $val = $this->_object_data[$field] ?? null;
-
-        if ($val && array_key_exists($field, static::$casting)) {
-            $cls_func = static::$casting[$field];
-            return (class_exists($cls_func)) ? new $cls_func($val) : $cls_func($val);
-        }
-
-        return $val;
+        return $this->_object_data[$field] ?? null;
     }
 
     /**

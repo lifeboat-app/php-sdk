@@ -12,7 +12,8 @@ use Lifeboat\Services\ApiService;
 class ServiceFactory {
 
     const CLASS_MAP = [
-        'orders'    => \Lifeboat\Services\Orders::class
+        'orders'    => \Lifeboat\Services\Orders::class,
+        'addresses' => \Lifeboat\Services\Addresses::class,
     ];
 
     /**

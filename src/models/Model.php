@@ -15,24 +15,24 @@ use Lifeboat\Utils\ArrayLib;
  * @package Lifeboat\Models
  *
  * @property int $ID
- * @property string $model
  */
 abstract class Model extends ObjectResource {
 
     abstract public function save(): ?Model;
+    abstract public function model(): string;
 
     public function __construct(Connector $client, array $_object_data = [])
     {
-        parent::__construct($client, $_object_data);
-
         if (!ArrayLib::is_associative($_object_data)) {
             throw new InvalidArgumentException("Model::__construct() expects an associative array");
         }
 
-        if (array_key_exists('model', $_object_data)) $this->model = $_object_data['model'];
-        $model = $this->model;
+        parent::__construct($client, $_object_data);
 
-        foreach ($_object_data as $field => $value) {
+        $model = $this->model();
+
+        // Mutate objects if needs be
+        foreach ($this->toArray() as $field => $value) {
             if (is_array($value)) {
                 if (ArrayLib::is_associative($value)) {
                     // Model or Object
@@ -44,26 +44,19 @@ abstract class Model extends ObjectResource {
                         $this->$name    = $value['field_value'];
                         $this->$field   = ObjectFactory::make($client, $value['object_data']);
                     }
-
-                    // Setup the reverse relationship unless it's already setup
-                    if (!property_exists($this->$field, $model)) {
-                        $this->$field->$model = $this;
-                    }
                 } else {
                     // HasMany / ManyMany Relation
                     $list = [];
                     foreach ($value as $item) {
                         if (ArrayLib::is_associative($item)) {
-                            $list = ObjectFactory::make($client, $item);
+                            $list[] = ObjectFactory::make($client, $item);
                         } else {
-                            $list = $item;
+                            $list[] = $item;
                         }
                     }
 
                     $this->$field = $list;
                 }
-            } else {
-                $this->$field = $value;
             }
         }
     }

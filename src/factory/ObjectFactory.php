@@ -3,6 +3,7 @@
 namespace Lifeboat\Factory;
 
 use Lifeboat\Connector;
+use Lifeboat\Models\Address;
 use Lifeboat\Models\Model;
 use Lifeboat\Models\Order;
 use Lifeboat\Resource\ObjectResource;
@@ -14,7 +15,8 @@ use Lifeboat\Resource\ObjectResource;
 class ObjectFactory {
 
     const CLASS_MAP = [
-        'order'     => Order::class
+        'order'     => Order::class,
+        'address'   => Address::class
     ];
 
     /**

@@ -28,6 +28,10 @@ class Orders extends ApiService {
     const FULFILLMENT_FULFILLED     = 2;
     const FULFILLMENT_DELIVERED     = 3;
 
+    const FULFILLMENT_SHIP          = 0;
+    const FULFILLMENT_DELIVER       = 1;
+    const FULFILLMENT_PICKUP        = 2;
+
     /**
      * @param int $id
      * @return Order|null
