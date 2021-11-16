@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Lifeboat PHP SDK",
     "license": "BSD-3-Clause",
-    "homepage": "https://lifeboat.app",
+    "homepage": "https://lifeboat.app/docs/api",
     "keywords": [
         "lifeboat", "sdk"
     ],
