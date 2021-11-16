@@ -5,7 +5,7 @@ namespace Lifeboat\Resource;
 use Lifeboat\Connector;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Model;
-use Lifeboat\Services\ObjectFactory;
+use Lifeboat\Factory\ObjectFactory;
 use IteratorAggregate;
 use Generator;
 

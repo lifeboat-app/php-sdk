@@ -4,8 +4,8 @@ namespace Lifeboat;
 
 use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\OAuthException;
-use Lifeboat\Models\Model;
-use Lifeboat\Services\ObjectFactory;
+use Lifeboat\Factory\ServiceFactory;
+use Lifeboat\Services\ApiService;
 use Lifeboat\Utils\Curl;
 use Lifeboat\Utils\URL;
 
@@ -16,7 +16,9 @@ use Lifeboat\Utils\URL;
  * @property string $_auth_domain
  * @property string|null $_access_token
  * @property string $_site_key
- * @property Model $address
+ *
+ * // Services
+ * @property \Lifeboat\Services\Orders $orders
  */
 abstract class Connector {
 
@@ -37,12 +39,12 @@ abstract class Connector {
 
     /**
      * @param string $service
-     * @return Model
+     * @return ApiService|null
      * @throws BadMethodException
      */
-    public function __get(string $service): Model
+    public function __get(string $service): ?ApiService
     {
-        $obj = ObjectFactory::create($this, $service);
+        $obj = ServiceFactory::inst($this, $service);
         if (!$obj) throw new BadMethodException("Service for `{$service}` does not exist");
 
         return $obj;

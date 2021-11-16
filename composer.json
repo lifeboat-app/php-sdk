@@ -23,14 +23,12 @@
     "autoload": {
         "psr-4": {
             "Lifeboat\\": "src",
-            "Lifeboat\\Services\\": "src/services",
             "Lifeboat\\Exceptions\\": "src/exceptions",
-            "Lifeboat\\Utils\\": "src/utils",
-            "Lifeboat\\Traits\\": "src/traits",
-            "Lifeboat\\Interfaces\\": "src/interfaces",
-            "Lifeboat\\Resource\\": "src/resource",
+            "Lifeboat\\Factory\\": "src/factory",
             "Lifeboat\\Models\\": "src/models",
-            "Lifeboat\\Lists\\": "src/lists"
+            "Lifeboat\\Resource\\": "src/resource",
+            "Lifeboat\\Services\\": "src/services",
+            "Lifeboat\\Utils\\": "src/utils"
         }
     },
     "require": {

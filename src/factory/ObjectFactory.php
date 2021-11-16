@@ -1,10 +1,11 @@
 <?php
 
-namespace Lifeboat\Services;
+namespace Lifeboat\Factory;
 
 use Lifeboat\Connector;
-use Lifeboat\Models\Address;
 use Lifeboat\Models\Model;
+use Lifeboat\Models\Order;
+use Lifeboat\Resource\ObjectResource;
 
 /**
  * Class ObjectFactory
@@ -13,7 +14,7 @@ use Lifeboat\Models\Model;
 class ObjectFactory {
 
     const CLASS_MAP = [
-        'address'   => Address::class
+        'order'     => Order::class
     ];
 
     /**
@@ -34,13 +35,12 @@ class ObjectFactory {
     /**
      * @param Connector $connector
      * @param array $data
-     * @return Model|null
+     * @return ObjectResource
      */
-    public static function make(Connector $connector, array $data): ?Model
+    public static function make(Connector $connector, array $data): ?ObjectResource
     {
         $model = $data['model'] ?? '';
-        unset($data['model']);
-
+        if (!$model) return new ObjectResource($connector, $data);
         return self::create($connector, $model, $data);
     }
 }
