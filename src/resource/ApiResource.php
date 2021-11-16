@@ -36,9 +36,9 @@ abstract class ApiResource implements ArrayAccess, Countable {
     }
 
     /**
-     * @return Connector|null
+     * @return Connector
      */
-    public function getClient(): ?Connector
+    public function getClient(): Connector
     {
         return $this->_client;
     }

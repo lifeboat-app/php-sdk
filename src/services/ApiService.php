@@ -7,6 +7,7 @@ use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Factory\ObjectFactory;
 use Lifeboat\Models\Model;
+use Lifeboat\Resource\ApiResource;
 
 /**
  * Class ApiService
@@ -54,11 +55,11 @@ abstract class ApiService {
      *
      * @param string $url
      * @param array $params
-     * @return Model|null
+     * @return ApiResource|null
      * @throws ApiException
      * @throws OAuthException
      */
-    protected function retrieve(string $url, array $params = []): ?Model
+    protected function retrieve(string $url, array $params = []): ?ApiResource
     {
         $curl = $this->getClient()->curl_api($url, 'GET', $params);
 

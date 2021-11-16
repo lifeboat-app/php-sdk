@@ -1,5 +1,11 @@
 # Lifeboat.app - PHP SDK
 
+[![Latest Stable Version](http://poser.pugx.org/lifeboat/php-sdk/v)](https://packagist.org/packages/lifeboat/php-sdk)
+[![Total Downloads](http://poser.pugx.org/lifeboat/php-sdk/downloads)](https://packagist.org/packages/lifeboat/php-sdk)
+[![Latest Unstable Version](http://poser.pugx.org/lifeboat/php-sdk/v/unstable)](https://packagist.org/packages/lifeboat/php-sdk)
+[![License](http://poser.pugx.org/lifeboat/php-sdk/license)](https://packagist.org/packages/lifeboat/php-sdk)
+[![PHP Version Require](http://poser.pugx.org/lifeboat/php-sdk/require/php)](https://packagist.org/packages/lifeboat/php-sdk)
+
 This SDK is meant to help developers to
 build apps that access the Lifeboat API.
 <br/>
