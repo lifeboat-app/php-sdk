@@ -2,6 +2,7 @@
 
 namespace Lifeboat;
 
+use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Utils\Curl;
 use Lifeboat\Utils\URL;
 use Lifeboat\Utils\Utils;
@@ -16,10 +17,14 @@ class App extends Connector {
 
     private string $_app_id;
     private string $_app_secret;
-    private string $_api_challenge;
+    private string $_api_challenge = '';
 
     public function __construct(string $app_id, string $app_secret, $auth_domain = self::AUTH_DOMAIN)
     {
+        if (!$app_id || !$app_secret) {
+            throw new InvalidArgumentException(static::class . "expects an app_id and app_secret");
+        }
+
         $this->setAppID($app_id);
         $this->setAppSecret($app_secret);
         $this->_auth_domain = rtrim($auth_domain, '/');
