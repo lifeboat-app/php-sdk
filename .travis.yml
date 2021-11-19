@@ -2,7 +2,7 @@ language: php
 
 env:
   global:
-    - CODECOV_TOKEN='b43efda0-6b9a-42d7-b231-7a5d9219b0da'
+    - CODECOV_TOKEN=b43efda0-6b9a-42d7-b231-7a5d9219b0da
 
 matrix:
   fast_finish: true
