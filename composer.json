@@ -31,7 +31,9 @@
             "Lifeboat\\Services\\": "src/services",
             "Lifeboat\\Utils\\": "src/utils",
             "Lifeboat\\Traits\\": "src/traits",
-            "Lifeboat\\Interfaces\\": "src/interfaces"
+            "Lifeboat\\Interfaces\\": "src/interfaces",
+            "Lifeboat\\Tests\\": "tests",
+            "Lifeboat\\Tests\\Factory\\": "tests/factory"
         }
     },
     "require": {
