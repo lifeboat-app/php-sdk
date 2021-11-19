@@ -1,5 +1,9 @@
 language: php
 
+env:
+  global:
+    - CODECOV_TOKEN='b43efda0-6b9a-42d7-b231-7a5d9219b0da'
+
 matrix:
   fast_finish: true
   include:
@@ -7,11 +11,11 @@ matrix:
     - php: 8.0
     - php: 8.1
 
-before_script: 
-  - composer require phpunit/phpunit
+before_install:
+  - travis_retry composer self-update
 
 script:
-    - ./vendor/bin/phpunit --coverage-clover coverage.xml
+  - vendor/bin/phpunit
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
