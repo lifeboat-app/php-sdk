@@ -15,7 +15,7 @@ before_install:
   - travis_retry composer self-update
 
 script:
-  - php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover='reports/coverage/coverage.xml' --coverage-html='reports/coverage'
+  - php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover coverage.xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
