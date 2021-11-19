@@ -53,7 +53,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "XDEBUG_MODE=coverage phpunit"
     },
     "prefer-stable": true,
     "minimum-stability": "dev"

@@ -6,3 +6,4 @@ composer.phar
 .phpunit.cache
 coverage.xml
 reports
+clover.xml
