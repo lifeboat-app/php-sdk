@@ -12,7 +12,7 @@ matrix:
 
 before_install:
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --no-interaction --dev
 
 script:
   - php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover coverage.xml
