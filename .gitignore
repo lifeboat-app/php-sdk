@@ -5,3 +5,4 @@ composer.phar
 .phpunit.result.cache
 .phpunit.cache
 coverage.xml
+reports
