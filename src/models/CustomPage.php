@@ -12,19 +12,4 @@ use Lifeboat\Services\CustomPages;
  */
 class CustomPage extends Page {
 
-    /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return 'Page';
-    }
-
-    /**
-     * @return CustomPages
-     */
-    public function getService(): CustomPages
-    {
-        return new CustomPages($this->getClient());
-    }
 }

@@ -28,4 +28,13 @@ class ClassMap {
         'pages'         => Services\Pages::class,
         'custom_pages'  => Services\CustomPages::class
     ];
+
+    const SERVICE_MODEL = [
+        Services\Orders::class      => Models\Order::class,
+        Services\Addresses::class   => Models\Address::class,
+        Services\Customers::class   => Models\Customer::class,
+        Services\Collections::class => Models\Collection::class,
+        Services\Pages::class       => Models\Page::class,
+        Services\CustomPages::class => Models\CustomPage::class
+    ];
 }

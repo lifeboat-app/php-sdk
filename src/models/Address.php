@@ -36,22 +36,6 @@ class Address extends Model {
     ];
 
     /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return 'Address';
-    }
-
-    /**
-     * @return Addresses
-     */
-    public function getService(): Addresses
-    {
-        return new Addresses($this->getClient());
-    }
-
-    /**
      * @return Customer|null
      * @throws ApiException
      * @throws OAuthException

@@ -33,20 +33,4 @@ class Collection extends Model {
             $this->Rules = json_decode($_object_data['Rules'], true);
         }
     }
-
-    /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return 'Collection';
-    }
-
-    /**
-     * @return Collections
-     */
-    public function getService(): Collections
-    {
-        return new Collections($this->getClient());
-    }
 }

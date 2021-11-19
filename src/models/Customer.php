@@ -27,20 +27,4 @@ class Customer extends Model {
     protected static array $casting = [
         'Birthday' => 'lifeboat_date_formatter'
     ];
-
-    /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return 'Customer';
-    }
-
-    /**
-     * @return Customers
-     */
-    public function getService(): Customers
-    {
-        return new Customers($this->getClient());
-    }
 }

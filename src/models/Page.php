@@ -25,19 +25,4 @@ class Page extends Model implements CustomFieldSupport {
         'ExcludeFromSiteMap' => 'boolval'
     ];
 
-    /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return 'Page';
-    }
-
-    /**
-     * @return Pages
-     */
-    public function getService(): Pages
-    {
-        return new Pages($this->getClient());
-    }
 }

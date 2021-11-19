@@ -12,14 +12,6 @@ use Lifeboat\Services\ApiService;
 class LifeboatModel extends Model {
 
     /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return 'Model';
-    }
-
-    /**
      * @return ApiService
      * @throws BadMethodException
      */
