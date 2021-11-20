@@ -2,10 +2,9 @@
 
 namespace Lifeboat\Tests\Factory;
 
-use Lifeboat\Client;
 use Lifeboat\Factory\ClassMap;
 use Lifeboat\Factory\ServiceFactory;
-use PHPUnit\Framework\TestCase;
+use Lifeboat\Tests\TestCase;
 
 class ServiceFactoryTest extends TestCase {
 
@@ -15,13 +14,11 @@ class ServiceFactoryTest extends TestCase {
      */
     public function testFactory()
     {
-        $mock = new Client('mock', 'mock');
-
         foreach (ClassMap::SERVICES as $name => $class) {
-            $this->assertInstanceOf($class, ServiceFactory::inst($mock, $name));
-            $this->assertInstanceOf($class, ServiceFactory::inst($mock, strtoupper($name)));
+            $this->assertInstanceOf($class, ServiceFactory::inst($this->getMockClient(), $name));
+            $this->assertInstanceOf($class, ServiceFactory::inst($this->getMockClient(), strtoupper($name)));
         }
 
-        $this->assertEquals(null, ServiceFactory::inst($mock, 'does_not_exist'));
+        $this->assertEquals(null, ServiceFactory::inst($this->getMockClient(), 'does_not_exist'));
     }
 }

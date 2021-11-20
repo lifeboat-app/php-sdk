@@ -2,11 +2,10 @@
 
 namespace Lifeboat\Tests\Models;
 
-use Lifeboat\Client;
 use Lifeboat\Factory\ClassMap;
 use Lifeboat\Models\Model;
 use Lifeboat\Services\ApiService;
-use PHPUnit\Framework\TestCase;
+use Lifeboat\Tests\TestCase;
 
 class ModelTest extends TestCase {
 
@@ -16,11 +15,10 @@ class ModelTest extends TestCase {
      */
     public function testGetService()
     {
-        $client = new Client('mock', 'mock');
-
         /** @var Model $class */
         foreach (ClassMap::MODELS as $class) {
-            $mock = new $class($client, ['ID' => 0]);
+            $mock = new $class($this->getMockClient(), ['ID' => 0]);
+            $this->assertInstanceOf(Model::class, $mock);
             $this->assertInstanceOf(ApiService::class, $mock->getService());
         }
     }

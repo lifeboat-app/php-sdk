@@ -2,9 +2,9 @@
 
 /**
  * @param string $date
- * @return DateTime|string|null
+ * @return DateTime|null
  */
-function lifeboat_date_formatter(string $date)
+function lifeboat_date_formatter(string $date): ?DateTime
 {
     if (!$date) return null;
 
@@ -12,8 +12,6 @@ function lifeboat_date_formatter(string $date)
         $date = new \DateTime($date . ' CET');
         return $date;
     } catch (Exception $e) {
-        error_log($e);
+        return null;
     }
-
-    return $date;
 }

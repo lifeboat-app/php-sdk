@@ -3,11 +3,10 @@
 namespace Lifeboat\Tests;
 
 use Lifeboat\App;
-use Lifeboat\Client;
 use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Utils\Utils;
 
-class AppTest extends Connector {
+class AppTest extends TestCase {
 
     /**
      * @test
@@ -25,8 +24,10 @@ class AppTest extends Connector {
         $this->assertEquals('app_id', $app->getAppID());
         $this->assertEquals('secret', $app->getAppSecret());
 
-        $this->expectException(InvalidArgumentException::class);
-        new App('', '');
+        try {
+            new App('', '');
+            $this->fail('App::__construct should have thrown an error for invalid arguments');
+        } catch (InvalidArgumentException $e) {}
     }
 
     /**

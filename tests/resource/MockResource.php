@@ -15,6 +15,7 @@ use Lifeboat\Tests\Services\MockService;
  * @property int $int_test
  * @property float $float_test
  * @property \DateTime $date_test
+ * @property null $date_test_neg
  */
 class MockResource extends ObjectResource {
 
@@ -22,7 +23,8 @@ class MockResource extends ObjectResource {
         'bool_test'     => 'boolval',
         'int_test'      => 'intval',
         'float_test'    => 'floatval',
-        'date_test'     => 'lifeboat_date_formatter'
+        'date_test'     => 'lifeboat_date_formatter',
+        'date_test_neg' => 'lifeboat_date_formatter',
     ];
 
     public function getService(): ApiService

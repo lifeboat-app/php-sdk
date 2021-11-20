@@ -5,7 +5,7 @@ namespace Lifeboat\Tests;
 use Lifeboat\Client;
 use Lifeboat\Exceptions\InvalidArgumentException;
 
-class ClientTest extends Connector {
+class ClientTest extends TestCase {
 
     /**
      * @test
@@ -21,8 +21,10 @@ class ClientTest extends Connector {
         $this->assertEquals('key', $client->getAPIKey());
         $this->assertEquals('secret', $client->getAPISecret());
 
-        $this->expectException(InvalidArgumentException::class);
-        new Client('', '');
+        try {
+            new Client('', '');
+            $this->fail('Client::__construct should have thrown an error for invalid arguments');
+        } catch (InvalidArgumentException $e) {}
     }
 
 }
