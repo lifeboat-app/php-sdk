@@ -1,6 +1,6 @@
 <?php
 
-namespace Lifeboat\Tests;
+namespace Lifeboat\Tests\Services;
 
 use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Resource\ListResource;
@@ -12,6 +12,7 @@ use Lifeboat\Services\CustomPages;
 use Lifeboat\Services\DeliveryZones;
 use Lifeboat\Services\Orders;
 use Lifeboat\Services\Pages;
+use Lifeboat\Tests\TestCase;
 
 /**
  * Class ServicesTest
@@ -22,6 +23,7 @@ class ServicesTest extends TestCase {
     /**
      * @test
      *
+     * @covers \Lifeboat\Resource\ListResource::__construct
      * @covers \Lifeboat\Resource\ListResource::getClient
      * @covers \Lifeboat\Resource\ListResource::setClient
      * @covers \Lifeboat\Resource\ListResource::getURL
@@ -44,6 +46,15 @@ class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::__construct
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\Collections::all
      */
     public function test_collections_all()
@@ -55,6 +66,7 @@ class ServicesTest extends TestCase {
     /**
      * @test
      *
+     * @covers \Lifeboat\Resource\ListResource::__construct
      * @covers \Lifeboat\Resource\ListResource::getClient
      * @covers \Lifeboat\Resource\ListResource::setClient
      * @covers \Lifeboat\Resource\ListResource::getURL
@@ -78,6 +90,7 @@ class ServicesTest extends TestCase {
     /**
      * @test
      *
+     * @covers \Lifeboat\Resource\ListResource::__construct
      * @covers \Lifeboat\Resource\ListResource::getClient
      * @covers \Lifeboat\Resource\ListResource::setClient
      * @covers \Lifeboat\Resource\ListResource::getURL
@@ -108,6 +121,7 @@ class ServicesTest extends TestCase {
     /**
      * @test
      *
+     * @covers \Lifeboat\Resource\ListResource::__construct
      * @covers \Lifeboat\Resource\ListResource::getClient
      * @covers \Lifeboat\Resource\ListResource::setClient
      * @covers \Lifeboat\Resource\ListResource::getURL
@@ -125,6 +139,15 @@ class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::__construct
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\Orders::all
      */
     public function test_orders_all()
@@ -159,12 +182,13 @@ class ServicesTest extends TestCase {
     /**
      * @test
      *
-     * @covers \Lifeboat\Resource\ListResource::getClient
-     * @covers \Lifeboat\Resource\ListResource::setClient
-     * @covers \Lifeboat\Resource\ListResource::getURL
-     * @covers \Lifeboat\Resource\ListResource::setURL
-     * @covers \Lifeboat\Resource\ListResource::getParams
-     * @covers \Lifeboat\Resource\ListResource::setParams
+     * @covers \Lifeboat\Resource\SimpleList::__construct
+     * @covers \Lifeboat\Resource\SimpleList::getClient
+     * @covers \Lifeboat\Resource\SimpleList::setClient
+     * @covers \Lifeboat\Resource\SimpleList::getURL
+     * @covers \Lifeboat\Resource\SimpleList::setURL
+     * @covers \Lifeboat\Resource\SimpleList::getParams
+     * @covers \Lifeboat\Resource\SimpleList::setParams
      *
      * @covers \Lifeboat\Services\Pages::all
      */
