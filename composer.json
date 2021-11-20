@@ -31,7 +31,12 @@
             "Lifeboat\\Services\\": "src/services",
             "Lifeboat\\Utils\\": "src/utils",
             "Lifeboat\\Traits\\": "src/traits",
-            "Lifeboat\\Interfaces\\": "src/interfaces"
+            "Lifeboat\\Interfaces\\": "src/interfaces",
+            "Lifeboat\\Tests\\": "tests",
+            "Lifeboat\\Tests\\Factory\\": "tests/factory",
+            "Lifeboat\\Tests\\Models\\": "tests/models",
+            "Lifeboat\\Tests\\Resource\\": "tests/resource",
+            "Lifeboat\\Tests\\Services\\": "tests/services"
         }
     },
     "require": {
@@ -49,6 +54,9 @@
         },
         "optimize-autoloader": true,
         "sort-packages": true
+    },
+    "scripts": {
+        "test": "XDEBUG_MODE=coverage phpunit"
     },
     "prefer-stable": true,
     "minimum-stability": "dev"

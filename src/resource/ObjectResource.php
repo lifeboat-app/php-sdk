@@ -57,12 +57,11 @@ abstract class ObjectResource extends ApiResource implements IteratorAggregate {
     /**
      * @param string $field
      * @param $value
-     * @return $this
+     * @return void
      */
-    public function __set(string $field, $value): ObjectResource
+    public function __set(string $field, $value): void
     {
         $this->_object_data[$field] = $value;
-        return $this;
     }
 
     public function offsetGet($offset)

@@ -52,22 +52,6 @@ class Order extends Model {
     /**
      * @return string
      */
-    public function model(): string
-    {
-        return 'Order';
-    }
-
-    /**
-     * @return Orders
-     */
-    public function getService(): Orders
-    {
-        return new Orders($this->getClient());
-    }
-
-    /**
-     * @return string
-     */
     public function FulfillmentType(): string
     {
         switch ($this->FulfillmentType) {

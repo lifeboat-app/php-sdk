@@ -9,12 +9,12 @@ namespace Lifeboat\Utils;
 class ArrayLib {
 
     /**
-     * @param $array
+     * @param array $array
      * @return bool
      */
-    public static function is_associative($array): bool
+    public static function is_associative(array $array): bool
     {
-        return !empty($array) && is_array($array) && ($array !== array_values($array));
+        return is_array($array) && !empty($array) && is_array($array) && ($array !== array_values($array));
     }
 
 }

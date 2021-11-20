@@ -3,11 +3,13 @@
 namespace Lifeboat\Models;
 
 use Lifeboat\Connector;
-use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\InvalidArgumentException;
+use Lifeboat\Factory\ClassMap;
 use Lifeboat\Resource\ObjectResource;
 use Lifeboat\Factory\ObjectFactory;
+use Lifeboat\Services\ApiService;
 use Lifeboat\Utils\ArrayLib;
+use ErrorException;
 
 /**
  * Class Model
@@ -16,8 +18,6 @@ use Lifeboat\Utils\ArrayLib;
  * @property int $ID
  */
 abstract class Model extends ObjectResource {
-
-    abstract public function model(): string;
 
     public function __construct(Connector $client, array $_object_data = [])
     {
@@ -74,7 +74,21 @@ abstract class Model extends ObjectResource {
     }
 
     /**
-     * @return Model|null
+     * @return ApiService
+     * @throws ErrorException
+     */
+    public function getService(): ApiService
+    {
+        foreach (ClassMap::SERVICE_MODEL as $service => $model) {
+            if ($model === static::class) return new $service($this->getClient());
+        }
+
+        throw new ErrorException("Could not determine which service to use for " . static::class);
+    }
+
+    /**
+     * @return $this|null
+     * @throws ErrorException
      */
     protected function save(): ?Model
     {

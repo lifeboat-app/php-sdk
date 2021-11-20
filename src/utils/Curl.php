@@ -18,15 +18,15 @@ class Curl {
 
     private static $_cache = [];
 
-    private $_method    = 'GET';
-    private $_url       = '';
-    private $_data      = [];
-    private $_isfile    = false;
-    private $_headers   = [
+    private string $_method = 'GET';
+    private string $_url    = '';
+    private array $_data    = [];
+    private bool $_isfile   = false;
+    private array $_headers = [
         'Content-Type'      => 'application/x-www-form-urlencoded',
         'X-Requested-By'    => self::USER_AGENT
     ];
-    private $_enable_cache = false;
+    private bool $_enable_cache = false;
 
     /**
      * Curl constructor.
@@ -37,9 +37,9 @@ class Curl {
      *
      * @throws LogicException
      */
-    public function __construct(string $url = null, array $data = [], array $headers = [])
+    public function __construct(string $url, array $data = [], array $headers = [])
     {
-        if (!is_null($url)) $this->setURL($url);
+        $this->setURL($url);
         foreach ($data as $name => $value)      $this->addDataParam($name, $value);
         foreach ($headers as $name => $value)   $this->addHeader($name, $value);
     }
@@ -69,6 +69,8 @@ class Curl {
      */
     public function setMethod(string $method = 'GET'): Curl
     {
+        $method = strtoupper($method);
+
         if (!in_array($method, self::ALLOWED_METHODS)) {
             throw new InvalidArgumentException("HTTP Method '{$method}' is not allowed");
         }
@@ -217,7 +219,7 @@ class Curl {
         $result     = curl_exec($ch);
         $http_code  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        $response = new CurlResponse($http_code, $result);
+        $response = new CurlResponse((int) $http_code, (string) $result);
         if ($this->_enable_cache && isset($cache_key)) self::$_cache[$cache_key] = $response;
 
         return $response;
