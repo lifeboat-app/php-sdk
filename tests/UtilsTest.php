@@ -34,7 +34,9 @@ class UtilsTest extends TestCase {
         try {
             ArrayLib::is_associative('123');
             $this->fail('ArrayLib::is_associative should not accept non array parameters');
-        } catch (\TypeError $e) {}
+        } catch (\TypeError $e) {
+            // Error should be thrown
+        }
     }
 
     /**
@@ -145,7 +147,9 @@ class UtilsTest extends TestCase {
         try {
             new Curl('/url', '123', 'abc');
             $this->fail('Curl::__construct parameters 2 and 3 should of type array only');
-        } catch (\TypeError $e) {}
+        } catch (\TypeError $e) {
+            // Error should be thrown
+        }
     }
 
     /**
@@ -175,7 +179,9 @@ class UtilsTest extends TestCase {
         try {
             $curl->setMethod('X');
             $this->fail('Curl::setMethod should only accept valid HTTP methods');
-        } catch (InvalidArgumentException $e) {}
+        } catch (InvalidArgumentException $e) {
+            // Error should be thrown
+        }
     }
 
     /**
@@ -188,6 +194,7 @@ class UtilsTest extends TestCase {
      * @covers \Lifeboat\CurlResponse::isJSON
      * @covers \Lifeboat\CurlResponse::getError
      * @covers \Lifeboat\CurlResponse::getErrors
+     * @covers \Lifeboat\CurlResponse::getJSON
      */
     public function test_curl_response()
     {

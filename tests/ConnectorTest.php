@@ -25,8 +25,9 @@ class ConnectorTest extends TestCase {
 
         try {
             $client->not_existant;
-
             $this->fail('Connector::__get should have thrown an error for a service that does not exist');
-        } catch (BadMethodException $e) {}
+        } catch (BadMethodException $e) {
+            // Error should be thrown
+        }
     }
 }

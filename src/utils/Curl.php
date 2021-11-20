@@ -219,7 +219,7 @@ class Curl {
         $result     = curl_exec($ch);
         $http_code  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        $response = new CurlResponse($http_code, $result);
+        $response = new CurlResponse((int) $http_code, (string) $result);
         if ($this->_enable_cache && isset($cache_key)) self::$_cache[$cache_key] = $response;
 
         return $response;

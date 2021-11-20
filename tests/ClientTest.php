@@ -24,7 +24,9 @@ class ClientTest extends TestCase {
         try {
             new Client('', '');
             $this->fail('Client::__construct should have thrown an error for invalid arguments');
-        } catch (InvalidArgumentException $e) {}
+        } catch (InvalidArgumentException $e) {
+            // Error should be thrown
+        }
     }
 
 }

@@ -37,6 +37,8 @@ class ObjectFactoryTest extends TestCase {
         try {
             ObjectFactory::create($this->getMockClient(), 'does_not_exist');
             $this->fail('ObjectFactory::create should have thrown error for a model class that does not exist');
-        } catch (InvalidArgumentException $e) {}
+        } catch (InvalidArgumentException $e) {
+            // Error should be thrown
+        }
     }
 }

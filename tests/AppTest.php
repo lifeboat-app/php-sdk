@@ -27,7 +27,9 @@ class AppTest extends TestCase {
         try {
             new App('', '');
             $this->fail('App::__construct should have thrown an error for invalid arguments');
-        } catch (InvalidArgumentException $e) {}
+        } catch (InvalidArgumentException $e) {
+            // Error should be thrown
+        }
     }
 
     /**
