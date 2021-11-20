@@ -13,10 +13,22 @@ use Lifeboat\Services\DeliveryZones;
 use Lifeboat\Services\Orders;
 use Lifeboat\Services\Pages;
 
+/**
+ * Class ServicesTest
+ * @package Lifeboat\Tests
+ */
 class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\Addresses::all
      */
     public function test_address_all()
@@ -42,6 +54,14 @@ class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\Customers::all
      */
     public function test_customers_all()
@@ -57,6 +77,14 @@ class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\CustomPages::all
      */
     public function test_custom_pages_all()
@@ -79,6 +107,14 @@ class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\DeliveryZones::all
      */
     public function test_delivery_zones_all()
@@ -122,6 +158,14 @@ class ServicesTest extends TestCase {
 
     /**
      * @test
+     *
+     * @covers \Lifeboat\Resource\ListResource::getClient
+     * @covers \Lifeboat\Resource\ListResource::setClient
+     * @covers \Lifeboat\Resource\ListResource::getURL
+     * @covers \Lifeboat\Resource\ListResource::setURL
+     * @covers \Lifeboat\Resource\ListResource::getParams
+     * @covers \Lifeboat\Resource\ListResource::setParams
+     *
      * @covers \Lifeboat\Services\Pages::all
      */
     public function test_pages_all()
@@ -131,13 +175,6 @@ class ServicesTest extends TestCase {
     }
 
     /**
-     * @covers \Lifeboat\Resource\ListResource::getClient
-     * @covers \Lifeboat\Resource\ListResource::setClient
-     * @covers \Lifeboat\Resource\ListResource::getURL
-     * @covers \Lifeboat\Resource\ListResource::setURL
-     * @covers \Lifeboat\Resource\ListResource::getParams
-     * @covers \Lifeboat\Resource\ListResource::setParams
-     *
      * @param ListResource $all
      * @param string $list_class
      * @param string $url
