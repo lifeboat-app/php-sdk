@@ -31,6 +31,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\ListResource::getParams
      * @covers \Lifeboat\Resource\ListResource::setParams
      *
+     * @covers \Lifeboat\Services\Addresses::__construct
+     * @covers \Lifeboat\Services\Addresses::setClient
+     * @covers \Lifeboat\Services\Addresses::getClient
      * @covers \Lifeboat\Services\Addresses::all
      */
     public function test_address_all()
@@ -55,6 +58,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\ListResource::getParams
      * @covers \Lifeboat\Resource\ListResource::setParams
      *
+     * @covers \Lifeboat\Services\Collections::__construct
+     * @covers \Lifeboat\Services\Collections::setClient
+     * @covers \Lifeboat\Services\Collections::getClient
      * @covers \Lifeboat\Services\Collections::all
      */
     public function test_collections_all()
@@ -74,6 +80,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\ListResource::getParams
      * @covers \Lifeboat\Resource\ListResource::setParams
      *
+     * @covers \Lifeboat\Services\Customers::__construct
+     * @covers \Lifeboat\Services\Customers::setClient
+     * @covers \Lifeboat\Services\Customers::getClient
      * @covers \Lifeboat\Services\Customers::all
      */
     public function test_customers_all()
@@ -98,6 +107,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\ListResource::getParams
      * @covers \Lifeboat\Resource\ListResource::setParams
      *
+     * @covers \Lifeboat\Services\CustomPages::__construct
+     * @covers \Lifeboat\Services\CustomPages::setClient
+     * @covers \Lifeboat\Services\CustomPages::getClient
      * @covers \Lifeboat\Services\CustomPages::all
      */
     public function test_custom_pages_all()
@@ -129,6 +141,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\ListResource::getParams
      * @covers \Lifeboat\Resource\ListResource::setParams
      *
+     * @covers \Lifeboat\Services\DeliveryZones::__construct
+     * @covers \Lifeboat\Services\DeliveryZones::setClient
+     * @covers \Lifeboat\Services\DeliveryZones::getClient
      * @covers \Lifeboat\Services\DeliveryZones::all
      */
     public function test_delivery_zones_all()
@@ -148,6 +163,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\ListResource::getParams
      * @covers \Lifeboat\Resource\ListResource::setParams
      *
+     * @covers \Lifeboat\Services\Orders::__construct
+     * @covers \Lifeboat\Services\Orders::setClient
+     * @covers \Lifeboat\Services\Orders::getClient
      * @covers \Lifeboat\Services\Orders::all
      */
     public function test_orders_all()
@@ -190,6 +208,9 @@ class ServicesTest extends TestCase {
      * @covers \Lifeboat\Resource\SimpleList::getParams
      * @covers \Lifeboat\Resource\SimpleList::setParams
      *
+     * @covers \Lifeboat\Services\Pages::__construct
+     * @covers \Lifeboat\Services\Pages::setClient
+     * @covers \Lifeboat\Services\Pages::getClient
      * @covers \Lifeboat\Services\Pages::all
      */
     public function test_pages_all()
