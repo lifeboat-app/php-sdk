@@ -68,7 +68,7 @@ class Order extends Model {
      */
     public function FulfillmentStatus(): string
     {
-        switch ($this->Status) {
+        switch ($this->Fulfillment) {
             case Orders::FULFILLMENT_PENDING:   return 'pending';
             case Orders::FULFILLMENT_FULFILLED: return 'fulfilled';
             case Orders::FULFILLMENT_DELIVERED: return 'delivered';

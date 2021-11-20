@@ -107,6 +107,22 @@ abstract class Connector {
     }
 
     /**
+     * @return string
+     */
+    public function getHost(): string
+    {
+        return $this->_host;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSiteKey(): string
+    {
+        return $this->_site_key;
+    }
+
+    /**
      * @param string $url
      * @param string $method
      * @param array $data
@@ -117,14 +133,14 @@ abstract class Connector {
     public function curl_api(string $url, string $method = 'GET', array $data = [], array $headers = []): CurlResponse
     {
         $url = URL::is_absolute_url($url) ? $url
-            : 'https://' . rtrim($this->_host, '/') . '/' . ltrim($url, '/');
+            : 'https://' . rtrim($this->getHost(), '/') . '/' . ltrim($url, '/');
 
         $curl = new Curl($url, $data, $headers);
 
         $curl->setMethod($method);
         $curl->addHeader('access-token', $this->getAccessToken());
-        $curl->addHeader('site-key', $this->_site_key);
-        $curl->addHeader('Host', $this->_host);
+        $curl->addHeader('site-key', $this->getSiteKey());
+        $curl->addHeader('Host', $this->getHost());
         $curl->addHeader('Accept', 'application/json');
 
         return $curl->curl_json();
@@ -136,6 +152,6 @@ abstract class Connector {
      */
     protected function auth_url(string $path): string
     {
-        return $this->_auth_domain . '/' . ltrim($path, '/');
+        return rtrim($this->_auth_domain, '/') . '/' . ltrim($path, '/');
     }
 }

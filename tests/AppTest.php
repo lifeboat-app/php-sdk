@@ -52,6 +52,7 @@ class AppTest extends TestCase {
     /**
      * @test
      * @covers \Lifeboat\App::getAuthURL
+     * @covers \Lifeboat\Connector::auth_url
      */
     public function testAuthURL()
     {

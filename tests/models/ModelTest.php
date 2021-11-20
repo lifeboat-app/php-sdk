@@ -2,9 +2,12 @@
 
 namespace Lifeboat\Tests\Models;
 
+use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Factory\ClassMap;
 use Lifeboat\Models\Collection;
+use Lifeboat\Models\LifeboatModel;
 use Lifeboat\Models\Model;
+use Lifeboat\Models\Order;
 use Lifeboat\Services\ApiService;
 use Lifeboat\Tests\TestCase;
 
@@ -70,10 +73,63 @@ class ModelTest extends TestCase {
      * @test
      * @covers \Lifeboat\Models\Collection::__construct
      */
-    public function testCollection()
+    public function test_collection()
     {
         $data = ['ID' => 1, 'Rules' => '{"1":1}'];
         $collection = new Collection($this->getMockClient(), $data);
         $this->assertEquals([1 => 1], $collection->Rules);
+    }
+
+    /**
+     * @test
+     * @covers \Lifeboat\Models\LifeboatModel::getService
+     */
+    public function test_lifeboat_model()
+    {
+        $model = new LifeboatModel($this->getMockClient(), ['ID' => 1]);
+
+        try {
+            $model->getService();
+            $this->fail('LifeboatModel::getService() should not be able to be called');
+        } catch (BadMethodException $e) {
+            // Should throw error
+        }
+
+        $this->assertIsObject($model);
+    }
+
+    /**
+     * @test
+     * @covers \Lifeboat\Models\Order::FulfillmentStatus
+     * @covers \Lifeboat\Models\Order::FulfillmentType
+     * @covers \Lifeboat\Models\Order::Status
+     */
+    public function test_order()
+    {
+        $order = new Order($this->getMockClient(), ['ID' => 0]);
+        $order->Status = 0;
+        $this->assertEquals('', $order->Status());
+        $order->Status = 1;
+        $this->assertEquals('open', $order->Status());
+        $order->Status = 2;
+        $this->assertEquals('paid', $order->Status());
+
+        $order->Fulfillment = 0;
+        $this->assertEquals('', $order->FulfillmentStatus());
+        $order->Fulfillment = 1;
+        $this->assertEquals('pending', $order->FulfillmentStatus());
+        $order->Fulfillment = 2;
+        $this->assertEquals('fulfilled', $order->FulfillmentStatus());
+        $order->Fulfillment = 3;
+        $this->assertEquals('delivered', $order->FulfillmentStatus());
+
+        $order->FulfillmentType = 0;
+        $this->assertEquals('ship', $order->FulfillmentType());
+        $order->FulfillmentType = 1;
+        $this->assertEquals('deliver', $order->FulfillmentType());
+        $order->FulfillmentType = 2;
+        $this->assertEquals('pickup', $order->FulfillmentType());
+        $order->FulfillmentType = 3;
+        $this->assertEquals('', $order->FulfillmentType());
     }
 }
