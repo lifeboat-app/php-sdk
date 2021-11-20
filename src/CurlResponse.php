@@ -15,13 +15,13 @@ class CurlResponse
     private int $http_code;
     private string $result;
 
-    public function __construct($http_code, $result)
+    public function __construct(int $http_code, string $result)
     {
         $this->http_code    = $http_code;
         $this->result       = $result;
     }
 
-    public function isValid()
+    public function isValid(): bool
     {
         return $this->http_code > 199 && $this->http_code < 300;
     }
@@ -29,7 +29,7 @@ class CurlResponse
     /**
      * @return int
      */
-    public function getHTTPCode()
+    public function getHTTPCode(): int
     {
         return $this->http_code;
     }
@@ -53,7 +53,10 @@ class CurlResponse
         return !is_null($this->getJSON());
     }
 
-    public function getError()
+    /**
+     * @return string
+     */
+    public function getError(): string
     {
         return (count($this->getErrors())) ? $this->getErrors()[0]['error'] : $this->getRaw();
     }
@@ -66,7 +69,10 @@ class CurlResponse
         return ($this->isJSON()) ? $this->getJSON()['errors'] : [['error' => $this->getRaw(), 'field' => '']];
     }
 
-    public function getRaw()
+    /**
+     * @return string
+     */
+    public function getRaw(): string
     {
         return $this->result;
     }

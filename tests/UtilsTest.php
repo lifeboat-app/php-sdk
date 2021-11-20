@@ -2,6 +2,8 @@
 
 namespace Lifeboat\Tests;
 
+use Lifeboat\CurlResponse;
+use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Utils\ArrayLib;
 use Lifeboat\Utils\Curl;
 use Lifeboat\Utils\URL;
@@ -33,6 +35,28 @@ class UtilsTest extends TestCase {
             ArrayLib::is_associative('123');
             $this->fail('ArrayLib::is_associative should not accept non array parameters');
         } catch (\TypeError $e) {}
+    }
+
+    /**
+     * @test
+     * @covers \Lifeboat\Utils\URL::is_absolute_url
+     */
+    public function test_is_absolute()
+    {
+        $this->assertFalse(URL::is_absolute_url('/'));
+        $this->assertFalse(URL::is_absolute_url('/123'));
+        $this->assertFalse(URL::is_absolute_url('/123?a'));
+        $this->assertFalse(URL::is_absolute_url('local.test/123?a'));
+        $this->assertFalse(URL::is_absolute_url('/#'));
+
+        $this->assertTrue(URL::is_absolute_url('://local.test'));
+        $this->assertTrue(URL::is_absolute_url('https://local.test'));
+        $this->assertTrue(URL::is_absolute_url('https://local.test/'));
+        $this->assertTrue(URL::is_absolute_url('https://local.test?a'));
+        $this->assertTrue(URL::is_absolute_url('https://local.test/?a'));
+        $this->assertTrue(URL::is_absolute_url('https://local.test/#'));
+        $this->assertTrue(URL::is_absolute_url('https://local.test#'));
+        $this->assertTrue(URL::is_absolute_url('https://user:pass@local.test#'));
     }
 
     /**
@@ -89,6 +113,7 @@ class UtilsTest extends TestCase {
      * @covers \Lifeboat\Utils\Curl::removeHeader
      * @covers \Lifeboat\Utils\Curl::isFileUpload
      * @covers \Lifeboat\Utils\Curl::setIsFileUpload
+     * @covers \Lifeboat\Utils\Curl::removeDataParam
      */
     public function test_curl_construct()
     {
@@ -104,6 +129,9 @@ class UtilsTest extends TestCase {
         $this->assertEquals($headers, $curl->getHeaders());
         $this->assertEquals($params, $curl->getDataParams());
 
+        $curl->removeDataParam('a');
+        $this->assertEquals([], $curl->getDataParams());
+
         $this->assertFalse($curl->isFileUpload());
         $curl->setIsFileUpload(true);
         $this->assertTrue($curl->isFileUpload());
@@ -118,5 +146,64 @@ class UtilsTest extends TestCase {
             new Curl('/url', '123', 'abc');
             $this->fail('Curl::__construct parameters 2 and 3 should of type array only');
         } catch (\TypeError $e) {}
+    }
+
+    /**
+     * @test
+     * @covers \Lifeboat\Utils\Curl::setMethod
+     * @covers \Lifeboat\Utils\Curl::getMethod
+     */
+    public function test_set_curl_method()
+    {
+        $curl = new Curl('/');
+
+        $this->assertEquals('GET', $curl->getMethod());
+
+        // Set method should be case insensitive
+        $curl->setMethod('pOsT');
+        $this->assertEquals('POST', $curl->getMethod());
+
+        try {
+            $curl->setMethod('GET');
+            $curl->setMethod('POST');
+            $curl->setMethod('PUT');
+            $curl->setMethod('DELETE');
+        } catch (InvalidArgumentException $e) {
+            $this->fail('Curl::setMethod should accept GET,POST,PUT,DELETE');
+        }
+
+        try {
+            $curl->setMethod('X');
+            $this->fail('Curl::setMethod should only accept valid HTTP methods');
+        } catch (InvalidArgumentException $e) {}
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lifeboat\CurlResponse::__construct
+     * @covers \Lifeboat\CurlResponse::getRaw
+     * @covers \Lifeboat\CurlResponse::getHTTPCode
+     * @covers \Lifeboat\CurlResponse::isValid
+     * @covers \Lifeboat\CurlResponse::isJSON
+     * @covers \Lifeboat\CurlResponse::getError
+     * @covers \Lifeboat\CurlResponse::getErrors
+     */
+    public function test_curl_response()
+    {
+        // Non-JSON
+        $response = new CurlResponse(204, 'No Content');
+        $this->assertEquals('No Content', $response->getRaw());
+        $this->assertEquals(204, $response->getHTTPCode());
+        $this->assertTrue($response->isValid());
+        $this->assertFalse($response->isJSON());
+
+        // JSON
+        $json = new CurlResponse(400, '{"errors":[{"error":"xxx"}]}');
+        $this->assertFalse($json->isValid());
+        $this->assertTrue($json->isJSON());
+        $this->assertEquals([['error' => 'xxx']], $json->getErrors());
+        $this->assertEquals([['error' => 'xxx']], $json->getJSON());
+        $this->assertEquals('xxx', $json->getError());
     }
 }

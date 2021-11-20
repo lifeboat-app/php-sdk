@@ -69,6 +69,8 @@ class Curl {
      */
     public function setMethod(string $method = 'GET'): Curl
     {
+        $method = strtoupper($method);
+
         if (!in_array($method, self::ALLOWED_METHODS)) {
             throw new InvalidArgumentException("HTTP Method '{$method}' is not allowed");
         }
