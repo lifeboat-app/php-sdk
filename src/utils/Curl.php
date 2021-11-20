@@ -18,15 +18,15 @@ class Curl {
 
     private static $_cache = [];
 
-    private $_method    = 'GET';
-    private $_url       = '';
-    private $_data      = [];
-    private $_isfile    = false;
-    private $_headers   = [
+    private string $_method = 'GET';
+    private string $_url    = '';
+    private array $_data    = [];
+    private bool $_isfile   = false;
+    private array $_headers = [
         'Content-Type'      => 'application/x-www-form-urlencoded',
         'X-Requested-By'    => self::USER_AGENT
     ];
-    private $_enable_cache = false;
+    private bool $_enable_cache = false;
 
     /**
      * Curl constructor.
@@ -37,9 +37,9 @@ class Curl {
      *
      * @throws LogicException
      */
-    public function __construct(string $url = null, array $data = [], array $headers = [])
+    public function __construct(string $url, array $data = [], array $headers = [])
     {
-        if (!is_null($url)) $this->setURL($url);
+        $this->setURL($url);
         foreach ($data as $name => $value)      $this->addDataParam($name, $value);
         foreach ($headers as $name => $value)   $this->addHeader($name, $value);
     }

@@ -51,9 +51,9 @@ class URL {
         $params = ($params) ? '?' . http_build_query($params) : '';
 
         // Recompile URI segments
-        $newUri = $scheme . '://' . $user . $parts['host'] . $port . $parts['path'] . $params;
+        $newUri = $scheme . '://' . $user . $parts['host'] . $port . ($parts['path'] ?? '') . $params;
 
-        return str_replace('http://dummy.com/', '', $newUri);
+        return str_replace('http://dummy.com', '', $newUri);
     }
 
     /**
