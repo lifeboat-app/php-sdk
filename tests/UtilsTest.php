@@ -203,7 +203,7 @@ class UtilsTest extends TestCase {
         $this->assertFalse($json->isValid());
         $this->assertTrue($json->isJSON());
         $this->assertEquals([['error' => 'xxx']], $json->getErrors());
-        $this->assertEquals([['error' => 'xxx']], $json->getJSON());
+        $this->assertEquals(['errors' => [['error' => 'xxx']]], $json->getJSON());
         $this->assertEquals('xxx', $json->getError());
     }
 }
