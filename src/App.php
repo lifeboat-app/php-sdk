@@ -16,7 +16,7 @@ class App extends Connector {
 
     private string $_app_id;
     private string $_app_secret;
-    private string $_api_challenge;
+    private string $_api_challenge = '';
 
     public function __construct(string $app_id, string $app_secret, $auth_domain = self::AUTH_DOMAIN)
     {
