@@ -21,7 +21,6 @@
         }
     ],
     "autoload": {
-        "file": ["src/includes/functions.php"],
         "psr-4": {
             "Lifeboat\\": "src",
             "Lifeboat\\Exceptions\\": "src/exceptions",
