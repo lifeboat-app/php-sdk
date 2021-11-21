@@ -1,10 +1,8 @@
 # Lifeboat.app - PHP SDK
 
+[![Build Status](https://app.travis-ci.com/lifeboat-app/php-sdk.svg?branch=main)](https://app.travis-ci.com/lifeboat-app/php-sdk)
 [![Latest Stable Version](http://poser.pugx.org/lifeboat/php-sdk/v)](https://packagist.org/packages/lifeboat/php-sdk)
-[![Latest Unstable Version](http://poser.pugx.org/lifeboat/php-sdk/v/unstable)](https://packagist.org/packages/lifeboat/php-sdk)
 [![License](http://poser.pugx.org/lifeboat/php-sdk/license)](https://packagist.org/packages/lifeboat/php-sdk)
-[![codecov](https://codecov.io/gh/lifeboat-app/php-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/lifeboat-app/php-sdk)
-[![Total Downloads](http://poser.pugx.org/lifeboat/php-sdk/downloads)](https://packagist.org/packages/lifeboat/php-sdk)
 
 This SDK is meant to help developers to
 build apps that access the Lifeboat API.
@@ -159,4 +157,7 @@ $product = $client->product->create([
 $product->save();
 ```
 
+[![Latest Unstable Version](http://poser.pugx.org/lifeboat/php-sdk/v/unstable)](https://packagist.org/packages/lifeboat/php-sdk)
+[![codecov](https://codecov.io/gh/lifeboat-app/php-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/lifeboat-app/php-sdk)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lifeboat-app/php-sdk/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/lifeboat-app/php-sdk/?branch=main)
 
