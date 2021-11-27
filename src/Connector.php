@@ -2,7 +2,7 @@
 
 namespace Lifeboat;
 
-require_once 'includes/functions.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'functions.php';
 
 use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Exceptions\OAuthException;
@@ -32,6 +32,9 @@ abstract class Connector {
 
     const AUTH_DOMAIN   = 'https://accounts.lifeboat.app';
     const SITES_URL     = '/oauth/sites';
+
+    const ACTIVE_HOST_PARAM = 'lb_active_host';
+    const ACTIVE_KEY_PARAM  = 'lb_active_site_key';
 
     protected string $_auth_domain = 'https://accounts.lifeboat.app';
     protected string $_access_token = '';
@@ -103,7 +106,36 @@ abstract class Connector {
         $this->_host        = $host;
         $this->_site_key    = $site_key;
 
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION[self::ACTIVE_HOST_PARAM]  = $this->_host;
+            $_SESSION[self::ACTIVE_KEY_PARAM]   = $this->_site_key;
+        }
+
         return $this;
+    }
+
+    /**
+     * @param bool $check_session
+     * @return array|null
+     */
+    public function getActiveSite(bool $check_session = true): ?array
+    {
+        if ($this->_host && $this->_site_key) {
+            return ['host' => $this->_host, 'site_key' => $this->_site_key];
+        }
+
+        if ($check_session && session_status() === PHP_SESSION_ACTIVE) {
+            $this->setActiveSite(
+                $_SESSION[self::ACTIVE_HOST_PARAM] ?? '',
+                $_SESSION[self::ACTIVE_KEY_PARAM] ?? ''
+            );
+
+            return $this->getActiveSite(false);
+        }
+
+
+
+        return null;
     }
 
     /**

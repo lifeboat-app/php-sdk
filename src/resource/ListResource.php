@@ -3,6 +3,7 @@
 namespace Lifeboat\Resource;
 
 use Lifeboat\Connector;
+use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Model;
 use Lifeboat\Factory\ObjectFactory;
@@ -115,6 +116,7 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
      * @param int $page
      * @return array
      * @throws OAuthException
+     * @throws ApiException
      */
     public function getItems(int $page = 1): array
     {
@@ -127,9 +129,12 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
             $response   = $this->getClient()->curl_api($this->getURL(), 'GET', $data);
             $data       = ($response->isValid() && $response->isJSON()) ? $response->getJSON() : [];
 
+            if (empty($data)) throw new ApiException($response->getError());
+
             $this->_max_items = (int) $data['available_items'];
 
             if (empty($data['items'])) return $this->_items[$page] = [];
+
 
             foreach ($data['items'] as $item) {
                 $obj = ObjectFactory::make($this->getClient(), $item);

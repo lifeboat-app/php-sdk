@@ -15,6 +15,9 @@ class App extends Connector {
 
     const CODE_URL = '/oauth/code';
 
+    const ACCESS_TOKEN_PARAM    = 'lb_app_access_token';
+    const API_CHALLENGE_PARAM   = 'lb_app_api_challenge';
+
     private string $_app_id;
     private string $_app_secret;
     private string $_api_challenge = '';
@@ -28,6 +31,10 @@ class App extends Connector {
         $this->setAppID($app_id);
         $this->setAppSecret($app_secret);
         $this->_auth_domain = rtrim($auth_domain, '/');
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $this->setAccessToken($_SESSION[self::ACCESS_TOKEN_PARAM] ?? '');
+        }
     }
 
     /**
@@ -63,6 +70,11 @@ class App extends Connector {
     public function setAccessToken(string $token): App
     {
         $this->_access_token = $token;
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION[self::ACCESS_TOKEN_PARAM] = $this->_access_token;
+        }
+
         return $this;
     }
 
@@ -83,15 +95,32 @@ class App extends Connector {
     public function setAPIChallenge(string $challenge): App
     {
         $this->_api_challenge = $challenge;
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION[self::API_CHALLENGE_PARAM] = $this->_api_challenge;
+        }
+
         return $this;
     }
 
     /**
+     * @param bool $check_session
      * @return string
      */
-    public function getAPIChallenge(): string
+    public function getAPIChallenge(bool $check_session = true): string
     {
-        if (!$this->_api_challenge) $this->_api_challenge = Utils::create_random_string(128);
+        if ($this->_api_challenge) return $this->_api_challenge;
+
+        if ($check_session && session_status() === PHP_SESSION_ACTIVE) {
+            $this->setAPIChallenge($_SESSION[self::API_CHALLENGE_PARAM] ?? '');
+            return $this->getAPIChallenge(false);
+        }
+
+        if (!$this->_api_challenge) {
+            $this->_api_challenge = Utils::create_random_string(128);
+            $this->setAPIChallenge($this->_api_challenge);
+        }
+
         return $this->_api_challenge;
     }
 
@@ -127,17 +156,26 @@ class App extends Connector {
         $json = $response->getJSON();
 
         if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
-            return $json['access_token'];
-        } else {
             return '';
+        } else {
+            $this->setAccessToken($json['access_token']);
+            return $this->getAccessToken(false);
         }
     }
 
     /**
+     * @param bool $check_session
      * @return string
      */
-    public function getAccessToken(): string
+    public function getAccessToken(bool $check_session = true): string
     {
-        return $this->_access_token ?? '';
+        if ($this->_access_token) return $this->_access_token;
+
+        if ($check_session && session_status() === PHP_SESSION_ACTIVE) {
+            $this->setAccessToken($_SESSION[self::ACCESS_TOKEN_PARAM] ?? '');
+            return $this->getAccessToken(false);
+        }
+
+        return '';
     }
 }
