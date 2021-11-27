@@ -24,7 +24,7 @@ use Lifeboat\Services\Customers;
  */
 class Customer extends Model {
 
-    protected static array $casting = [
+    protected static $casting = [
         'Birthday' => 'lifeboat_date_formatter'
     ];
 }

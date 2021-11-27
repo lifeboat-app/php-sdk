@@ -17,7 +17,7 @@ The Lifeboat PHP SDK enables site owners and app developers
 to leverage the Lifeboat API with their software.
 
 ## Requirements
-PHP 7.1 or later
+PHP 7 or later
 
 ## Composer
 You can install this SDK via [Composer](https://getcomposer.org).

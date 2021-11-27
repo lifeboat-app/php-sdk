@@ -20,7 +20,7 @@ use Lifeboat\Services\Collections;
  */
 class Collection extends Model {
 
-    protected static array $casting = [
+    protected static $casting = [
         'ExcludeFromSitemap'    => 'boolval',
         'isAuto'                => 'boolval',
         'MatchAny'              => 'boolval'

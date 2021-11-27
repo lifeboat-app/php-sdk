@@ -19,7 +19,7 @@ use Lifeboat\Tests\Services\MockService;
  */
 class MockResource extends ObjectResource {
 
-    protected static array $casting = [
+    protected static $casting = [
         'bool_test'     => 'boolval',
         'int_test'      => 'intval',
         'float_test'    => 'floatval',

@@ -12,8 +12,8 @@ namespace Lifeboat;
 class CurlResponse
 {
 
-    private int $http_code;
-    private string $result;
+    private $http_code;
+    private $result;
 
     public function __construct(int $http_code, string $result)
     {

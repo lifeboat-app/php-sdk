@@ -10,7 +10,7 @@ use Lifeboat\Client;
  */
 class TestCase extends \PHPUnit\Framework\TestCase {
 
-    private Client $client;
+    private $client;
 
     public function setUp(): void
     {

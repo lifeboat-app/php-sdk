@@ -30,7 +30,7 @@ use Lifeboat\Services\Addresses;
  */
 class Address extends Model {
 
-    protected static array $casting = [
+    protected static $casting = [
         'isDefault'     => 'boolval',
         'CustomerID'    => 'intval'
     ];

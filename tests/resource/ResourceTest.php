@@ -7,7 +7,7 @@ use Lifeboat\Tests\TestCase;
 
 class ResourceTest extends TestCase {
 
-    private array $mock_resource_data = [
+    private $mock_resource_data = [
         'bool_test'     => '1',
         'int_test'      => '8',
         'float_test'    => '8.5',

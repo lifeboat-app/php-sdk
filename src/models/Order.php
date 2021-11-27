@@ -36,7 +36,7 @@ use Lifeboat\Services\Orders;
  */
 class Order extends Model {
 
-    protected static array $casting = [
+    protected static $casting = [
         'Created'       => 'lifeboat_date_formatter',
         'LastModified'  => 'lifeboat_date_formatter',
         'Subtotal'      => 'floatval',
@@ -75,5 +75,24 @@ class Order extends Model {
         }
 
         return '';
+    }
+
+    /**
+     * @param string $price
+     * @return string
+     */
+    public function formatPrice(string $price): string
+    {
+        switch (strtolower($price)) {
+            case 'subtotal' : $value = $this->Subtotal; break;
+            case 'tax'      : $value = $this->Tax; break;
+            case 'delivery' : $value = $this->Delivery; break;
+            case 'handling' : $value = $this->Handling; break;
+            case 'discount' : $value = $this->Discount; break;
+            case 'total'    : $value = $this->Total; break;
+            default: return '';
+        }
+
+        return ($value !== 0) ?  number_format($value, 2) . $this->Currency : '-';
     }
 }

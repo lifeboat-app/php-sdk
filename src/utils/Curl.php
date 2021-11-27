@@ -18,15 +18,15 @@ class Curl {
 
     private static $_cache = [];
 
-    private string $_method = 'GET';
-    private string $_url    = '';
-    private array $_data    = [];
-    private bool $_isfile   = false;
-    private array $_headers = [
+    private $_method = 'GET';
+    private $_url    = '';
+    private $_data    = [];
+    private $_isfile   = false;
+    private $_headers = [
         'Content-Type'      => 'application/x-www-form-urlencoded',
         'X-Requested-By'    => self::USER_AGENT
     ];
-    private bool $_enable_cache = false;
+    private $_enable_cache = false;
 
     /**
      * Curl constructor.

@@ -15,7 +15,7 @@ use Lifeboat\Services\ApiService;
  */
 abstract class ApiResource implements ArrayAccess, Countable {
 
-    private Connector $_client;
+    private $_client;
 
     abstract public function getService(): ApiService;
 

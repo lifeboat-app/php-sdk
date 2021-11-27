@@ -36,10 +36,10 @@ abstract class Connector {
     const ACTIVE_HOST_PARAM = 'lb_active_host';
     const ACTIVE_KEY_PARAM  = 'lb_active_site_key';
 
-    protected string $_auth_domain = 'https://accounts.lifeboat.app';
-    protected string $_access_token = '';
-    protected string $_site_key = '';
-    protected string $_host = '';
+    protected $_auth_domain = 'https://accounts.lifeboat.app';
+    protected $_access_token = '';
+    protected $_site_key = '';
+    protected $_host = '';
 
     /**
      * @return string

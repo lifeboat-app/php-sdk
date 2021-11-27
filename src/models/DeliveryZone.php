@@ -13,7 +13,7 @@ namespace Lifeboat\Models;
  */
 class DeliveryZone extends Model {
 
-    protected static array $casting = [
+    protected static $casting = [
         'HandlingFee' => 'floatval'
     ];
 }

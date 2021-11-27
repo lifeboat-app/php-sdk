@@ -14,9 +14,9 @@ use ArrayIterator;
  */
 abstract class ObjectResource extends ApiResource implements IteratorAggregate {
 
-    protected static array $casting = [];
+    protected static $casting = [];
 
-    private array $_object_data;
+    private $_object_data;
 
     /**
      * ObjectResource constructor.

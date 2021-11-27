@@ -21,7 +21,7 @@ use Lifeboat\Services\Pages;
  */
 class Page extends Model implements CustomFieldSupport {
 
-    protected static array $casting = [
+    protected static $casting = [
         'ExcludeFromSiteMap' => 'boolval'
     ];
 

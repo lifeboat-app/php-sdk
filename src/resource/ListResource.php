@@ -34,13 +34,13 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
     const PAGE_PARAM    = 'page';
     const LIMIT_PARAM   = 'limit';
 
-    private string $_url = '';
-    private array $_params = [];
-    protected array $_items = [];
-    protected int $_max_items = 0;
+    private $_url = '';
+    private $_params = [];
+    protected $_items = [];
+    protected $_max_items = 0;
 
-    private int $_page_length;
-    private Connector $_client;
+    private $_page_length;
+    private $_client;
 
     /**
      * ListResource constructor.

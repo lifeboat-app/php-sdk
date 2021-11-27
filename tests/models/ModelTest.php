@@ -114,15 +114,6 @@ class ModelTest extends TestCase {
         $order->Status = 2;
         $this->assertEquals('paid', $order->Status());
 
-        $order->Fulfillment = 0;
-        $this->assertEquals('', $order->FulfillmentStatus());
-        $order->Fulfillment = 1;
-        $this->assertEquals('pending', $order->FulfillmentStatus());
-        $order->Fulfillment = 2;
-        $this->assertEquals('fulfilled', $order->FulfillmentStatus());
-        $order->Fulfillment = 3;
-        $this->assertEquals('delivered', $order->FulfillmentStatus());
-
         $order->FulfillmentType = 0;
         $this->assertEquals('ship', $order->FulfillmentType());
         $order->FulfillmentType = 1;
