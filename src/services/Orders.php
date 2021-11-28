@@ -51,7 +51,7 @@ class Orders extends ApiService {
     public function fetch(int $id): ?Order
     {
         /** @var Order|null $fetch */
-        $fetch = $this->_get('api/orders/order' . $id);
+        $fetch = $this->_get('api/orders/order/' . $id);
         return $fetch;
     }
 
