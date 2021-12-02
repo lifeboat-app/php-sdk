@@ -5,6 +5,7 @@ namespace Lifeboat\Models;
 use Lifeboat\Connector;
 use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Factory\ClassMap;
+use Lifeboat\Resource\ListResource;
 use Lifeboat\Resource\ObjectResource;
 use Lifeboat\Factory\ObjectFactory;
 use Lifeboat\Services\ApiService;
@@ -58,11 +59,25 @@ abstract class Model extends ObjectResource {
     }
 
     /**
+     * @param bool $flatten
      * @return array
      */
-    public function toArray(): array
+    public function toArray(bool $flatten = false): array
     {
-        return iterator_to_array($this->getIterator());
+        if (!$flatten) return iterator_to_array($this->getIterator());
+
+        $data = [];
+
+        foreach ($this->getIterator() as $key => $value) {
+            if ($value instanceof self)         $data[$key] = $value->toArray(true);
+            else if ($value instanceof ListResource) {
+                $data[$key] = [];
+                /** @var self $item */
+                foreach ($value as $item) $data[$key][] = $item->toArray(true);
+            } else $data[$key] = $value;
+        }
+
+        return $data;
     }
 
     /**

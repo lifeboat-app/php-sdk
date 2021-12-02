@@ -4,7 +4,6 @@ namespace Lifeboat\Utils;
 
 use Lifeboat\CurlResponse;
 use Lifeboat\Exceptions\InvalidArgumentException;
-use Lifeboat\Utils\URL;
 use LogicException;
 
 /**
@@ -164,9 +163,10 @@ class Curl {
     }
 
     /**
+     * @param bool $retry_on_401
      * @return CurlResponse
      */
-    public function curl(): CurlResponse
+    public function curl(bool $retry_on_401 = true): CurlResponse
     {
         $post_data      = null;
         $send_headers   = [];
@@ -218,6 +218,8 @@ class Curl {
 
         $result     = curl_exec($ch);
         $http_code  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($http_code === 401 && $retry_on_401) return $this->curl(false);
 
         $response = new CurlResponse((int) $http_code, (string) $result);
         if ($this->_enable_cache && isset($cache_key)) self::$_cache[$cache_key] = $response;
