@@ -115,18 +115,22 @@ class Orders extends ApiService {
     }
 
     /**
+     * @param array $filters
+     * @param int $page_length
      * @return ListResource
      */
-    public function deliveries(): ListResource
+    public function deliveries(array $filters = [], int $page_length = 20): ListResource
     {
-        return new ListResource($this->getClient(), 'api/orders/delivery', [], 20);
+        return new ListResource($this->getClient(), 'api/orders/delivery', $filters, $page_length);
     }
 
     /**
+     * @param array $filters
+     * @param int $page_length
      * @return ListResource
      */
-    public function pickups(): ListResource
+    public function pickups(array $filters = [], int $page_length = 20): ListResource
     {
-        return new ListResource($this->getClient(), 'api/orders/pickup', [], 20);
+        return new ListResource($this->getClient(), 'api/orders/pickup', $filters, $page_length);
     }
 }
