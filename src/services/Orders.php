@@ -86,13 +86,69 @@ class Orders extends ApiService {
      * @param string $period
      * @param int $status
      * @param int $fulfillment
+     * @param string $search
+     * @param int $page_length
+     * @param string $url
      * @return ListResource
      */
     public function all(
         string $period = self::PERIOD_7,
         int $status = self::STATUS_PAID,
-        int $fulfillment = self::FULFILLMENT_PENDING
+        int $fulfillment = self::FULFILLMENT_PENDING,
+        string $search = '',
+        int $page_length = 20,
+        string $url = 'api/orders/all'
     ): ListResource {
+        $data = $this->validate_filters($period, $status, $fulfillment, $search);
+        return new ListResource($this->getClient(), $url, $data, $page_length);
+    }
+
+    /**
+     * @param string $period
+     * @param int $fulfillment
+     * @param string $search
+     * @param int $page_length
+     * @return ListResource
+     */
+    public function deliveries(
+        string $period = self::PERIOD_7,
+        int $fulfillment = self::FULFILLMENT_PENDING,
+        string $search = '',
+        int $page_length = 20
+    ): ListResource {
+        return $this->all($period, self::STATUS_PAID, $fulfillment, $search, $page_length, 'api/orders/delivery');
+    }
+
+    /**
+     * @param string $period
+     * @param int $fulfillment
+     * @param string $search
+     * @param int $page_length
+     * @return ListResource
+     */
+    public function pickups(
+        string $period = self::PERIOD_7,
+        int $fulfillment = self::FULFILLMENT_PENDING,
+        string $search = '',
+        int $page_length = 20
+    ): ListResource
+    {
+        return $this->all($period, self::STATUS_PAID, $fulfillment, $search, $page_length, 'api/orders/pickup');
+    }
+
+    /**
+     * @param string $period
+     * @param int $status
+     * @param int $fulfillment
+     * @param string $search
+     * @return array
+     */
+    private function parse_filters(
+        string $period = self::PERIOD_7,
+        int $status = self::STATUS_PAID,
+        int $fulfillment = self::FULFILLMENT_PENDING,
+        string $search = ''
+    ): array {
         if (!in_array($period, self::VALID_PERIODS)) {
             throw new InvalidArgumentException("Orders::all expects parameter 1 to be a valid period");
         }
@@ -106,31 +162,10 @@ class Orders extends ApiService {
         }
 
         $data = [
-            'period'        => $period,
-            'status'        => $status,
-            'fulfillment'   => $fulfillment
+            'period'       => $period,
+            'status'       => $status,
+            'fulfillment'   => $fulfillment,
+            'search'       => $search
         ];
-
-        return new ListResource($this->getClient(), 'api/orders/all', $data, 20);
-    }
-
-    /**
-     * @param array $filters
-     * @param int $page_length
-     * @return ListResource
-     */
-    public function deliveries(array $filters = [], int $page_length = 20): ListResource
-    {
-        return new ListResource($this->getClient(), 'api/orders/delivery', $filters, $page_length);
-    }
-
-    /**
-     * @param array $filters
-     * @param int $page_length
-     * @return ListResource
-     */
-    public function pickups(array $filters = [], int $page_length = 20): ListResource
-    {
-        return new ListResource($this->getClient(), 'api/orders/pickup', $filters, $page_length);
     }
 }
