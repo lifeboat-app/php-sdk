@@ -99,7 +99,7 @@ class Orders extends ApiService {
         int $page_length = 20,
         string $url = 'api/orders/all'
     ): ListResource {
-        $data = $this->validate_filters($period, $status, $fulfillment, $search);
+        $data = $this->parse_filters($period, $status, $fulfillment, $search);
         return new ListResource($this->getClient(), $url, $data, $page_length);
     }
 
