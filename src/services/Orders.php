@@ -161,7 +161,7 @@ class Orders extends ApiService {
             throw new InvalidArgumentException("Orders::all expects parameter 3 to be a valid fulfillment status");
         }
 
-        $data = [
+        return [
             'period'       => $period,
             'status'       => $status,
             'fulfillment'   => $fulfillment,
