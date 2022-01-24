@@ -2,12 +2,9 @@
 
 namespace Lifeboat\Tests;
 
-use Lifeboat\App;
 use Lifeboat\Client;
 use Lifeboat\Exceptions\BadMethodException;
-use Lifeboat\Exceptions\InvalidArgumentException;
 use Lifeboat\Factory\ClassMap;
-use Lifeboat\Utils\Utils;
 
 class ConnectorTest extends TestCase {
 

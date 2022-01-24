@@ -22,6 +22,9 @@ class ModelTest extends TestCase {
         /** @var Model $class */
         foreach (ClassMap::MODELS as $class) {
             $mock = new $class($this->getMockClient(), ['ID' => 0]);
+
+            if ($class instanceof LifeboatModel) continue;
+
             $this->assertInstanceOf(Model::class, $mock);
             $this->assertInstanceOf(ApiService::class, $mock->getService());
         }

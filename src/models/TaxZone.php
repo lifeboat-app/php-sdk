@@ -12,7 +12,7 @@ namespace Lifeboat\Models;
  * @property DeliveryZone $DeliveryZone
  * @property int $DeliveryZoneID
  */
-class TaxZone extends Model {
+class TaxZone extends LifeboatModel {
 
     protected static $casting = [
         'TaxPercent'        => 'floatval',

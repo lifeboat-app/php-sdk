@@ -17,6 +17,7 @@ class LifeboatModel extends Model {
      */
     public function getService(): ApiService
     {
-        throw new BadMethodException("LifeboatModel does have an API service");
+        $class = get_called_class();
+        throw new BadMethodException("{$class} does have an API service");
     }
 }
