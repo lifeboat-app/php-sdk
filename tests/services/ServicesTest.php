@@ -170,7 +170,12 @@ class ServicesTest extends TestCase {
      */
     public function test_orders_all()
     {
-        $params = ['period' => Orders::PERIOD_7, 'status' => Orders::STATUS_PAID, 'fulfillment' => Orders::FULFILLMENT_PENDING];
+        $params = [
+            'period'        => Orders::PERIOD_7,
+            'status'        => Orders::STATUS_PAID,
+            'fulfillment'   => Orders::FULFILLMENT_PENDING,
+            'search'        => ''
+        ];
 
         $service = new Orders($this->getMockClient());
         $this->check_curl_all($service->all(), 'api/orders/all', ListResource::class, $params);

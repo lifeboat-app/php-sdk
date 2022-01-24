@@ -100,7 +100,6 @@ class ModelTest extends TestCase {
 
     /**
      * @test
-     * @covers \Lifeboat\Models\Order::FulfillmentStatus
      * @covers \Lifeboat\Models\Order::FulfillmentType
      * @covers \Lifeboat\Models\Order::Status
      */
