@@ -28,6 +28,7 @@ use Lifeboat\Utils\URL;
  * @property \Lifeboat\Services\CustomPages $custom_pages
  * @property \Lifeboat\Services\DeliveryZones $delivery_zones
  * @property \Lifeboat\Services\TaxCodes $tax_codes
+ * @property \Lifeboat\Services\Locations $locations
  */
 abstract class Connector {
 
@@ -134,24 +135,24 @@ abstract class Connector {
             return $this->getActiveSite(false);
         }
 
-
-
         return null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getHost(): string
+    public function getHost(): ?string
     {
+        if (!$this->getActiveSite(true)) return null;
         return $this->_host;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSiteKey(): string
+    public function getSiteKey(): ?string
     {
+        if (!$this->getActiveSite(true)) return null;
         return $this->_site_key;
     }
 

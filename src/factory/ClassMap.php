@@ -20,7 +20,8 @@ class ClassMap {
         'custompage'    => Models\CustomPage::class,
         'deliveryzone'  => Models\DeliveryZone::class,
         'taxcode'       => Models\TaxCode::class,
-        'taxzone'       => Models\TaxZone::class
+        'taxzone'       => Models\TaxZone::class,
+        'location'      => Models\Location::class
     ];
 
     const SERVICES = [
@@ -31,7 +32,8 @@ class ClassMap {
         'pages'             => Services\Pages::class,
         'custom_pages'      => Services\CustomPages::class,
         'delivery_zones'    => Services\DeliveryZones::class,
-        'tax_codes'         => Services\TaxCodes::class
+        'tax_codes'         => Services\TaxCodes::class,
+        'locations'         => Services\Locations::class
     ];
 
     const SERVICE_MODEL = [
@@ -42,6 +44,7 @@ class ClassMap {
         Services\Pages::class           => Models\Page::class,
         Services\CustomPages::class     => Models\CustomPage::class,
         Services\DeliveryZones::class   => Models\DeliveryZone::class,
-        Services\TaxCodes::class        => Models\TaxCode::class
+        Services\TaxCodes::class        => Models\TaxCode::class,
+        Services\Locations::class       => Models\Location::class,
     ];
 }

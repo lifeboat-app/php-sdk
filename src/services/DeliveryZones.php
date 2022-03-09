@@ -22,7 +22,7 @@ class DeliveryZones extends ApiService {
     public function fetch(int $id): ?DeliveryZone
     {
         /** @var DeliveryZone|null $fetch */
-        $fetch = $this->_get('api/delivery-zones/zone' . $id);
+        $fetch = $this->_get('api/delivery-zones/zone/' . $id);
         return $fetch;
     }
 
