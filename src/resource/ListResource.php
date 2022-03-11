@@ -135,7 +135,6 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
 
             if (empty($data['items'])) return $this->_items[$page] = [];
 
-
             foreach ($data['items'] as $item) {
                 $obj = ObjectFactory::make($this->getClient(), $item);
                 if (!$obj) continue;

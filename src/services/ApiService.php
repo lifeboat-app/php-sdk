@@ -15,7 +15,7 @@ use Lifeboat\Resource\ApiResource;
  * @property Connector $client
  */
 abstract class ApiService {
-
+    
     /** @var Connector $client */
     protected $client;
 

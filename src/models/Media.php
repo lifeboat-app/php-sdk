@@ -5,6 +5,8 @@ namespace Lifeboat\Models;
 /**
  * Class Media
  * @package Lifeboat\Models
+ * 
+ * @todo Implement Video object
  *
  * @property string $Name
  * @property string $Title

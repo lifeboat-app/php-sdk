@@ -30,6 +30,7 @@ use Lifeboat\Utils\URL;
  * @property \Lifeboat\Services\TaxCodes $tax_codes
  * @property \Lifeboat\Services\Locations $locations
  * @property \Lifeboat\Services\Media $media
+ * @property \Lifeboat\Services\Products $products
  */
 abstract class Connector {
 

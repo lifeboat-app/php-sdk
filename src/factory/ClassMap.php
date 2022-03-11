@@ -23,7 +23,8 @@ class ClassMap {
         'taxzone'       => Models\TaxZone::class,
         'location'      => Models\Location::class,
         'media'         => Models\Media::class,
-        'image'         => Models\Image::class
+        'image'         => Models\Image::class,
+        'product'       => Models\Product::class
     ];
 
     const SERVICES = [
@@ -36,7 +37,8 @@ class ClassMap {
         'delivery_zones'    => Services\DeliveryZones::class,
         'tax_codes'         => Services\TaxCodes::class,
         'locations'         => Services\Locations::class,
-        'media'             => Services\Media::class
+        'media'             => Services\Media::class,
+        'products'          => Services\Products::class
     ];
 
     const SERVICE_MODEL = [
@@ -50,5 +52,6 @@ class ClassMap {
         Services\TaxCodes::class        => Models\TaxCode::class,
         Services\Locations::class       => Models\Location::class,
         Services\Media::class           => Models\Media::class,
+        Services\Products::class        => Models\Product::class
     ];
 }
