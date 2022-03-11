@@ -4,6 +4,7 @@ namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
+use Lifeboat\Models\Location;
 use Lifeboat\Models\Product;
 use Lifeboat\Resource\ListResource;
 
@@ -78,6 +79,22 @@ class Products extends ApiService {
     public function delete(int $id): bool
     {
         return $this->_delete('api/products/product/' . $id);
+    }
+
+    /**
+     * @param int $id
+     * @param int $quantity
+     * @param Location $location
+     * @return bool
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    public function setStockLevel(int $id, int $quantity, Location $location): bool
+    {
+        return (bool) $this->_post('api/products/inventory/'. $id . '/quantity', [
+            'location'  => $location->ID,
+            'quantity'  => $quantity
+        ]);
     }
 
     /**

@@ -66,16 +66,20 @@ abstract class ApiService {
     /**
      * @param string $url
      * @param array $params
-     * @return ApiResource|null
+     * @return ApiResource|bool|null
      * @throws ApiException
      * @throws OAuthException
      */
-    protected function _post(string $url, array $params = []): ?ApiResource
+    protected function _post(string $url, array $params = [])
     {
         $curl = $this->getClient()->curl_api($url, 'POST', $params);
-
-        if ($curl->isValid() && $curl->isJSON()) {
-            return ObjectFactory::make($this->getClient(), $curl->getJSON());
+        
+        if ($curl->isValid()) {
+            if ($curl->isJSON()) {
+                return ObjectFactory::make($this->getClient(), $curl->getJSON());
+            } else {
+                return true;
+            }
         }
 
         throw new ApiException($curl->getError());
