@@ -14,7 +14,7 @@ use Lifeboat\Services\Collections;
  * @property bool $isAuto
  * @property bool $MatchAny
  * @property array|null $Rules
- * @property array $Products
+ * @property Product[] $Products
  * @property array $Tags
  * @property string|null $Thumbnail
  */

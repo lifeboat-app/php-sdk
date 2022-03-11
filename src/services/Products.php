@@ -26,7 +26,9 @@ class Products extends ApiService {
     const SORT_CREATED_DESC = 'title_za';
     const SORT_EDITED_ASC   = 'title_az';
     const SORT_EDITED_DESC  = 'title_za';
-    
+
+    private static $_cache_lists = [];
+
     /**
      * @param int $id
      * @return Product|null
@@ -63,25 +65,44 @@ class Products extends ApiService {
     public function update(int $id, array $data): ?Product
     {
         /** @var Product|null $post */
-        $post = $this->_post('api/products/product' . $id, $data);
+        $post = $this->_post('api/products/product/' . $id, $data);
         return $post;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     * @throws ApiException
+     * @throws OAuthException
+     */
+    public function delete(int $id): bool
+    {
+        return $this->_delete('api/products/product/' . $id);
     }
 
     /**
      * @param string $search
      * @param string $sort
      * @param string $type
+     * @param bool $clear_cache
      * @return ListResource
      */
     public function all(
-        string $search = '', 
-        string $sort = self::SORT_CREATED_DESC, 
-        string $type = self::LIST_BARE
+        string $search = '',
+        string $sort = self::SORT_CREATED_DESC,
+        string $type = self::LIST_BARE,
+        bool $clear_cache = false
     ): ListResource {
-        return new ListResource($this->getClient(), 'api/products/all', [
-            'search'    => $search,
-            'sort'      => $sort,
-            'data'      => $type
-        ], 20);
+        $key = md5($search.$sort.$type);
+
+        if (!array_key_exists($key, self::$_cache_lists) || $clear_cache) {
+            self::$_cache_lists[$key] = new ListResource($this->getClient(), 'api/products/all', [
+                'search'    => $search,
+                'sort'      => $sort,
+                'data'      => $type
+            ], 20);
+        }
+
+        return self::$_cache_lists[$key];
     }
 }
