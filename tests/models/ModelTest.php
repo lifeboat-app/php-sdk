@@ -27,7 +27,7 @@ class ModelTest extends TestCase {
             try {
                 $this->assertInstanceOf(ApiService::class, $mock->getService());
             } catch (BadMethodException $e) {
-                $this->assertInstanceOf(LifeboatModel::class, get_class($mock));
+                $this->assertInstanceOf(LifeboatModel::class, $mock);
             }
         }
     }
