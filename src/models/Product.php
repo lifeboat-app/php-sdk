@@ -40,6 +40,7 @@ namespace Lifeboat\Models;
  * @property array $Descriptions
  * @property int $ReviewsCount
  * @property int $Rating
+ * @property LifeboatModel[]|null $MetaData
  */
 class Product extends Page {
 
