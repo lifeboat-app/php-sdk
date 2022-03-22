@@ -53,6 +53,14 @@ abstract class Connector {
     abstract public function getAccessToken(): string;
 
     /**
+     * @return string
+     */
+    public function getAuthDomain(): string
+    {
+        return $this->_auth_domain;
+    }
+
+    /**
      * @param string $service
      * @return ApiService|null
      * @throws BadMethodException
@@ -88,15 +96,26 @@ abstract class Connector {
 
     /**
      * Makes a request to the API to refresh the current access token
-     * @see Client::getAccessToken()
      *
      * @return $this
      * @throws OAuthException
      */
     public function refreshAccessToken(): Connector
     {
-        $this->_access_token = null;
-        $this->getAccessToken();
+        $curl = new Curl($this->auth_url('/oauth/refresh_token'), [
+            'access_token'  => $this->getAccessToken(),
+        ]);
+
+        $curl->setMethod('POST');
+        $response = $curl->curl();
+        $json = $response->getJSON();
+
+        if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
+            throw new OAuthException($response->getError());
+        } else {
+            $this->setAccessToken($json['access_token']);
+        }
+
         return $this;
     }
 
