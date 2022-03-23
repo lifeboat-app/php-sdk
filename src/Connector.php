@@ -53,14 +53,6 @@ abstract class Connector {
     abstract public function getAccessToken(): string;
 
     /**
-     * @return string
-     */
-    public function getAuthDomain(): string
-    {
-        return $this->_auth_domain;
-    }
-
-    /**
      * @param string $service
      * @return ApiService|null
      * @throws BadMethodException
@@ -71,6 +63,14 @@ abstract class Connector {
         if (!$obj) throw new BadMethodException("Service for `{$service}` does not exist");
 
         return $obj;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthDomain(): string
+    {
+        return $this->_auth_domain;
     }
 
     /**

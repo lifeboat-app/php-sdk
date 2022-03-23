@@ -13,7 +13,7 @@ use Lifeboat\Utils\Utils;
  */
 class App extends Connector {
 
-    const CODE_URL = '/oauth/code';
+    const CODE_URL      = '/oauth/code';
 
     const ACCESS_TOKEN_PARAM    = 'lb_app_access_token';
     const API_CHALLENGE_PARAM   = 'lb_app_api_challenge';
@@ -22,7 +22,12 @@ class App extends Connector {
     private $_app_secret;
     private $_api_challenge = '';
 
-    public function __construct(string $app_id, string $app_secret, $auth_domain = self::AUTH_DOMAIN)
+    /**
+     * @param string $app_id
+     * @param string $app_secret
+     * @param string $auth_domain
+     */
+    public function __construct(string $app_id, string $app_secret, string $auth_domain = self::AUTH_DOMAIN)
     {
         if (!$app_id || !$app_secret) {
             throw new InvalidArgumentException(static::class . "expects an app_id and app_secret");
@@ -116,10 +121,8 @@ class App extends Connector {
             return $this->getAPIChallenge(false);
         }
 
-        if (!$this->_api_challenge) {
-            $this->_api_challenge = Utils::create_random_string(128);
-            $this->setAPIChallenge($this->_api_challenge);
-        }
+        $this->_api_challenge = Utils::create_random_string(128);
+        $this->setAPIChallenge($this->_api_challenge);
 
         return $this->_api_challenge;
     }
