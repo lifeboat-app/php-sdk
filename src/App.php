@@ -160,7 +160,7 @@ class App extends Connector {
         $curl->setMethod('POST');
         $response = $curl->curl();
         $json = $response->getJSON();
-        
+
         if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
             if (array_key_exists('error', $json)) throw new OAuthException($json['error']);
             return '';
@@ -204,7 +204,8 @@ class App extends Connector {
     {
         $curl = new Curl($this->auth_url('/oauth/refresh_token'), [
             'access_token'  => $this->getAccessToken(),
-            'app_id'        => $this->getAppID()
+            'app_id'        => $this->getAppID(),
+            'site_key'      => $this->getSiteKey()
         ]);
 
         $curl->setMethod('POST');
