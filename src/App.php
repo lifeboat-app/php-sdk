@@ -251,12 +251,6 @@ class App extends Connector {
     {
         $headers = parent::getAuthHeaders();
         $headers['app-id'] = $this->getAppID();
-        
-        if (!$this->getAccessToken()) $this->fetchAccessToken();
-        if (!$this->getAccessToken()) throw new OAuthException("Access token has not been retreived");
-        
-        $headers['access-token'] = $this->getAccessToken();
-        
         return $headers;
     }
 }

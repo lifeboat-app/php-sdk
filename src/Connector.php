@@ -163,6 +163,9 @@ abstract class Connector {
      */
     public function getAuthHeaders(): array
     {
+        if (!$this->getAccessToken()) $this->fetchAccessToken();
+        if (!$this->getAccessToken()) throw new OAuthException("Access token has not been retreived");
+
         return [
             'access-token'  => $this->getAccessToken(),
             'site-key'      => $this->getSiteKey()
