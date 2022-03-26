@@ -74,52 +74,6 @@ abstract class Connector {
     }
 
     /**
-     * @return array
-     * @throws OAuthException
-     */
-    public function getSites(): array
-    {
-        $curl = new Curl($this->auth_url(self::SITES_URL), [
-            'access_token' => $this->getAccessToken()
-        ]);
-
-        $curl->setMethod('POST');
-        $response = $curl->curl();
-
-        if (!$response->isValid()) {
-            $error = $response->getJSON();
-            throw new OAuthException($error['error'], $error['code']);
-        }
-
-        return $response->getJSON() ?? [];
-    }
-
-    /**
-     * Makes a request to the API to refresh the current access token
-     *
-     * @return $this
-     * @throws OAuthException
-     */
-    public function refreshAccessToken(): Connector
-    {
-        $curl = new Curl($this->auth_url('/oauth/refresh_token'), [
-            'access_token'  => $this->getAccessToken(),
-        ]);
-
-        $curl->setMethod('POST');
-        $response = $curl->curl();
-        $json = $response->getJSON();
-
-        if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
-            throw new OAuthException($response->getError());
-        } else {
-            $this->setAccessToken($json['access_token']);
-        }
-
-        return $this;
-    }
-
-    /**
      * @param string $host
      * @param string $site_key
      * @return $this
@@ -193,12 +147,26 @@ abstract class Connector {
         $curl = new Curl($url, $data, $headers);
 
         $curl->setMethod($method);
-        $curl->addHeader('access-token', $this->getAccessToken());
-        $curl->addHeader('site-key', $this->getSiteKey());
-        $curl->addHeader('Host', $this->getHost());
         $curl->addHeader('Accept', 'application/json');
+        $curl->addHeader('Host', $this->getHost());
+
+        foreach ($this->getAuthHeaders() as $header => $value) {
+            if ($value) $curl->addHeader($header, $value);
+        }
 
         return $curl->curl_json();
+    }
+
+    /**
+     * @return array
+     * @throws OAuthException
+     */
+    public function getAuthHeaders(): array
+    {
+        return [
+            'access-token'  => $this->getAccessToken(),
+            'site-key'      => $this->getSiteKey()
+        ];
     }
 
     /**

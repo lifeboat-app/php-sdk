@@ -3,6 +3,7 @@
 namespace Lifeboat;
 
 use Lifeboat\Exceptions\InvalidArgumentException;
+use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Utils\Curl;
 use Lifeboat\Utils\URL;
 use Lifeboat\Utils\Utils;
@@ -143,25 +144,36 @@ class App extends Connector {
     }
 
     /**
-     * @param string $code
+     * @param string|null $code
      * @return string
      */
-    public function fetchAccessToken(string $code): string
+    public function fetchAccessToken(string $code = null): string
     {
         $curl = new Curl($this->auth_url('/oauth/token'), [
+            'app_id'        => $this->getAppID(),
             'challenge'     => $this->getAPIChallenge(),
-            'code'          => $code,
-            'app_secret'    => $this->getAppSecret()
+            'app_secret'    => $this->getAppSecret(),
+            'site_key'      => $this->getSiteKey(),
+            'code'          => $code
         ]);
 
         $curl->setMethod('POST');
         $response = $curl->curl();
         $json = $response->getJSON();
-
+        
         if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
+            if (array_key_exists('error', $json)) throw new OAuthException($json['error']);
             return '';
         } else {
             $this->setAccessToken($json['access_token']);
+
+            if (array_key_exists('store_data', $json) &&
+                array_key_exists('domain', $json['store_data']) &&
+                array_key_exists('site_key', $json['store_data'])
+            ) {
+                $this->setActiveSite($json['store_data']['domain'], $json['store_data']['site_key']);
+            }
+
             return $this->getAccessToken(false);
         }
     }
@@ -180,5 +192,71 @@ class App extends Connector {
         }
 
         return '';
+    }
+
+    /**
+     * Makes a request to the API to refresh the current access token
+     *
+     * @return $this
+     * @throws OAuthException
+     */
+    public function refreshAccessToken(): Connector
+    {
+        $curl = new Curl($this->auth_url('/oauth/refresh_token'), [
+            'access_token'  => $this->getAccessToken(),
+            'app_id'        => $this->getAppID()
+        ]);
+
+        $curl->setMethod('POST');
+        $response = $curl->curl();
+        $json = $response->getJSON();
+
+        if (!$response->isValid() || !$json || !array_key_exists('access_token', $json)) {
+            throw new OAuthException($response->getError());
+        } else {
+            $this->setAccessToken($json['access_token']);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     * @throws OAuthException
+     */
+    public function getSites(): array
+    {
+        $curl = new Curl($this->auth_url(self::SITES_URL), [
+            'access_token'  => $this->getAccessToken(),
+            'app_id'        => $this->getAppID()
+        ]);
+
+        $curl->setMethod('POST');
+        $response = $curl->curl();
+
+        if (!$response->isValid()) {
+            $error = $response->getJSON();
+            throw new OAuthException($error['error'], $error['code']);
+        }
+
+        return $response->getJSON() ?? [];
+    }
+
+    /**
+     * @return array
+     * @throws Exceptions\OAuthException
+     */
+    public function getAuthHeaders(): array
+    {
+        $headers = parent::getAuthHeaders();
+        $headers['app-id'] = $this->getAppID();
+        
+        if (!$this->getAccessToken()) $this->fetchAccessToken();
+        if (!$this->getAccessToken()) throw new OAuthException("Access token has not been retreived");
+        
+        $headers['access-token'] = $this->getAccessToken();
+        
+        return $headers;
     }
 }

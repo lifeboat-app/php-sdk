@@ -17,7 +17,7 @@ The Lifeboat PHP SDK enables site owners and app developers
 to leverage the Lifeboat API with their software.
 
 ## Requirements
-PHP 7 or later
+PHP 7.2 or later
 
 ## Composer
 You can install this SDK via [Composer](https://getcomposer.org).
@@ -33,53 +33,33 @@ require_once('vendor/autoload.php');
 
 
 ## Setup
-#### For site owners/testers
-1. Create an account on [accounts.lifeboat.app/register](https://accounts.lifeboat.app)
-2. Create your online shop
-3. Go to your profile [accounts.lifeboat.app/profile/edit](https://accounts.lifeboat.app/profile/edit)
-4. Create an API Key
-
-#### For App developers
 1. Create a developer account on [dev.lifeboat.app](https://dev.lifeboat.app)
 2. Register an app
 
 
+### NOTE
+**NEVER share your app credentials**
+
 ## Getting Started
 ### Invoke the client
-#### Using API Key / Secret
-This method should only be used if you are the owner of the site.
-<br />
-**NEVER** give API credentials to third-party apps.
+Initialise the SDK and redirect the user to the Lifeboat OAuth
+service. The OAuth service will automatically login and capture
+user authorisation to use your app.
 ```php
-// Prepares a connection to the API
-$client = new \Lifeboat\Client(
-    '<API KEY>',
-    '<API SECRET>'
-);
-```
-
-<br />
-
-#### Using an App
-This method should be used when creating an app.
-<br />
-This method ensures a secure environment for your app, and the merchant
-without the need to ever share credentials.
-```php
+// The SDK requires sessions to store and cache data
 session_start();
 
-$app = new \Lifeboat\App(
+$client = new \Lifeboat\App(
     '<APP ID>',
     '<APP SECRET>'
 );
 
-// Store this challenge to verify the request
-// This is to mitigate against any man in the middle attacks
-$challenge = $app->getAPIChallenge();
-$_SESSION['lifeboat_challenge'] = $challenge;
+// The SDK will create a strong challenge key
+// and automatically store it in the session
+$challenge = $client->getAPIChallenge();
 
 // Redirect the user to the auth screen
-$redirect_url = $app->getAuthURL(
+$redirect_url = $client->getAuthURL(
     'https://my.app/oauth/process_url',
     'https://my.app/oauth/error_url',
     $challenge
@@ -92,56 +72,48 @@ exit;
 ```php
 // https://my.app/oauth/process_url
 session_start();
-$app = new \Lifeboat\App(
+$client = new \Lifeboat\App(
     '<APP ID>',
     '<APP SECRET>'
 );
 
 // This code will be returned by the oauth service to provide
-// you with temporary access to the logged in user account,
-// so that your app can create an access token.
+// you with temporary access to the logged in user account.
 $code = $_GET['code'];
 
 // Get an access token
-$access_token = $app->fetchAccessToken($code);
-
-// Save this token so the user doesn't need to login again
-// with every request.
-// Tokens expire every 2 hours
-$_SESSION['lifeboat_access_token'] = $access_token;
-
-// Set the access token
-$app->setAccessToken($access_token);
+// The SDK will automatically store the access token in sessions
+//
+// If the user has access to multiple stores
+// the SDK will also automatically select the active store
+// based on the user's selection durin OAuth
+$access_token = $client->fetchAccessToken($code);
 ```
 
-<br />
+### Using the client without user interaction
+Sometimes you might need to perform actions on the user's
+store without that user actively interacting with your app.
+A common usecase is retreiving products on a cron to perform
+analysis or other checks.
+<br /><br />
+To do this you need to know 2 important parameters:
+- `site_key`: The store's site_key you want to access
+- `site_host`: The store's master domain
 
-### Selecting the active site
-The merchant might have multiple sites in his/her name.
-Thus, you need to announce to the Lifeboat client which site will be accessed.
+
+**Note: The user must first authorise your app before you can use this method**
 ```php
-// Get a list of all the sites the merchant has access to
-$sites = $client->getSites();
+$client = new \Lifeboat\App(
+    '<APP ID>',
+    '<APP SECRET>'
+);
 
-// Show some sort of selection screen...
-$site = [
-    'name' => '...',
-    'domain' => '...',
-    'api_url' => '...',
-    'site_key' => '...'
-];
-
-// Specify the active site
-$client->setActiveSite($site['domain'], $site['site_key']);
+// Let the SDK know which store you'll be interacting with
+$client->setActiveSite($site_host, $site_key);
 ```
-
-**IMPORTANT**
-<br />
-The API is always accessible ONLY from the master domain of a
-Lifeboat site. If the merchants change their master domain,
-the active site has to be updated.
-
-<br />
+*From here on forward you can keep using the `$client` as if
+the user has logged in. The SDK & Lifeboat OAuth will automatically
+check that your app has been authorised by the user.*
 
 ### Basic Usage
 Creating, manipulating and deleting objects from here on is
