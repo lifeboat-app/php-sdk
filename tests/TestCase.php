@@ -2,7 +2,7 @@
 
 namespace Lifeboat\Tests;
 
-use Lifeboat\Client;
+use Lifeboat\App;
 
 /**
  * Class TestCase
@@ -15,7 +15,7 @@ class TestCase extends \PHPUnit\Framework\TestCase {
     public function setUp(): void
     {
         parent::setUp();
-        $this->client = $this->createMock(Client::class);
+        $this->client = $this->createMock(App::class);
     }
 
     public function tearDown(): void
@@ -23,7 +23,7 @@ class TestCase extends \PHPUnit\Framework\TestCase {
         parent::tearDown();
     }
 
-    public function getMockClient(): Client
+    public function getMockClient(): App
     {
         return $this->client;
     }

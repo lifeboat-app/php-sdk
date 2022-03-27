@@ -2,7 +2,7 @@
 
 namespace Lifeboat\Tests\Resource;
 
-use Lifeboat\Client;
+use Lifeboat\App;
 use Lifeboat\Tests\TestCase;
 
 class ResourceTest extends TestCase {
@@ -37,7 +37,7 @@ class ResourceTest extends TestCase {
         $date = new \DateTime('2021-10-05 00:13:25 CET');
         $this->assertEquals($date->getTimestamp(), $mock->date_test->getTimestamp());
 
-        $client_2 = $this->createMock(Client::class);
+        $client_2 = $this->createMock(App::class);
         $mock->setClient($client_2);
         $this->assertEquals($client_2, $mock->getClient());
     }

@@ -2,7 +2,7 @@
 
 namespace Lifeboat\Tests;
 
-use Lifeboat\Client;
+use Lifeboat\App;
 use Lifeboat\Exceptions\BadMethodException;
 use Lifeboat\Factory\ClassMap;
 
@@ -14,7 +14,7 @@ class ConnectorTest extends TestCase {
      */
     public function test_service_factory()
     {
-        $client = new Client('mock', 'mock');
+        $client = new App('mock', 'mock');
 
         foreach (ClassMap::SERVICES as $service => $class) {
             $this->assertInstanceOf($class, $client->$service);
@@ -37,7 +37,7 @@ class ConnectorTest extends TestCase {
      */
     public function test_active_site()
     {
-        $client = new Client('mock', 'mock');
+        $client = new App('mock', 'mock');
         $client->setActiveSite('test.example', '123');
 
         $this->assertEquals('test.example', $client->getHost());

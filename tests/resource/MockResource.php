@@ -2,7 +2,7 @@
 
 namespace Lifeboat\Tests\Resource;
 
-use Lifeboat\Client;
+use Lifeboat\App;
 use Lifeboat\Resource\ObjectResource;
 use Lifeboat\Services\ApiService;
 use Lifeboat\Tests\Services\MockService;
@@ -29,7 +29,7 @@ class MockResource extends ObjectResource {
 
     public function getService(): ApiService
     {
-        return new MockService(new Client('mock', 'mock'));
+        return new MockService(new App('mock', 'mock'));
     }
 
 }
