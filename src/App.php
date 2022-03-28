@@ -140,6 +140,8 @@ class App extends Connector {
         $url    = URL::setGetVar('process_url', urlencode($process_url), $url);
         $url    = URL::setGetVar('error_url', urlencode($error_url), $url);
 
+        if ($this->getSiteKey()) $url = URL::setGetVar('site_key', $this->getSiteKey(), $url);
+
         return URL::setGetVar('challenge', Utils::pack($challenge), $url);
     }
 
