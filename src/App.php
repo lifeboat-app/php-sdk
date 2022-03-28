@@ -245,6 +245,27 @@ class App extends Connector {
     }
 
     /**
+     * @param string $url
+     * @param string $method
+     * @param array $data
+     * @param array $headers
+     * @param bool $retry
+     * @return CurlResponse
+     * @throws OAuthException
+     */
+    public function curl_api(string $url, string $method = 'GET', array $data = [], array $headers = [], bool $retry = true): CurlResponse
+    {
+        $response = parent::curl_api($url, $method, $data, $headers);
+
+        if ($retry && $response->getHTTPCode() === 401) {
+            $this->fetchAccessToken();
+            return $this->curl_api($url, $method, $data, $headers, false);
+        }
+
+        return $response;
+    }
+
+    /**
      * @return array
      * @throws Exceptions\OAuthException
      */

@@ -141,10 +141,10 @@ abstract class Connector {
      */
     public function curl_api(string $url, string $method = 'GET', array $data = [], array $headers = []): CurlResponse
     {
-        $url = URL::is_absolute_url($url) ? $url
+        $uri = URL::is_absolute_url($url) ? $url
             : 'https://' . rtrim($this->getHost(), '/') . '/' . ltrim($url, '/');
 
-        $curl = new Curl($url, $data, $headers);
+        $curl = new Curl($uri, $data, $headers);
 
         $curl->setMethod($method);
         $curl->addHeader('Accept', 'application/json');
