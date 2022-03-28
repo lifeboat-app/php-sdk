@@ -66,7 +66,8 @@ class CurlResponse
      */
     public function getErrors(): array
     {
-        return ($this->isJSON()) ? $this->getJSON()['errors'] : [['error' => $this->getRaw(), 'field' => '']];
+        $errors = ($this->isJSON()) ? $this->getJSON()['errors'] : [['error' => $this->getRaw(), 'field' => '']];
+        return is_array($errors) ? $errors : [];
     }
 
     /**
