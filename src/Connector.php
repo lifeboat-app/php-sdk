@@ -37,8 +37,8 @@ abstract class Connector {
     const AUTH_DOMAIN   = 'https://accounts.lifeboat.app';
     const SITES_URL     = '/oauth/sites';
 
-    const ACTIVE_HOST_PARAM = 'lb_active_host';
-    const ACTIVE_KEY_PARAM  = 'lb_active_site_key';
+    const ACTIVE_HOST_PARAM = 'lb_sdk_active_host';
+    const ACTIVE_KEY_PARAM  = 'lb_sdk_active_site_key';
 
     protected $_auth_domain = 'https://accounts.lifeboat.app';
     protected $_access_token = '';
