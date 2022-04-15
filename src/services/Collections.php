@@ -65,9 +65,11 @@ class Collections extends ApiService {
     }
 
     /**
+     * @param bool $detailed
      * @return ListResource
      */
-    public function all(): ListResource {
-        return new ListResource($this->getClient(), 'api/collections/all', [], 20);
+    public function all(bool $detailed = false): ListResource {
+        $data = ($detailed) ? ['data' => 'detailed'] : [];
+        return new ListResource($this->getClient(), 'api/collections/all', $data, 20);
     }
 }
