@@ -14,7 +14,7 @@ use Lifeboat\Services\Collections;
  * @property bool $isAuto
  * @property bool $MatchAny
  * @property array|null $Rules
- * @property Product[] $Products
+ * @property array|null $Products
  * @property array $Tags
  * @property string|null $Thumbnail
  */
@@ -28,6 +28,12 @@ class Collection extends Model {
 
     public function __construct(Connector $client, array $_object_data = [])
     {
+        if (array_key_exists('Products', $_object_data) && is_array($_object_data['Products'])) {
+            $products = [];
+            foreach ($_object_data['Products'] as $product) $products[] = $product['ID'];
+            $_object_data['Products'] = $products;
+        }
+        
         parent::__construct($client, $_object_data);
         if (array_key_exists('Rules', $_object_data)) {
             $this->Rules = json_decode($_object_data['Rules'], true);
