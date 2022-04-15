@@ -45,7 +45,7 @@ abstract class Model extends ObjectResource {
                     // HasMany / ManyMany Relation
                     $list = [];
                     foreach ($value as $item) {
-                        if (ArrayLib::is_associative($item)) {
+                        if (is_array($item) && ArrayLib::is_associative($item)) {
                             $list[] = ObjectFactory::make($client, $item);
                         } else {
                             $list[] = $item;
