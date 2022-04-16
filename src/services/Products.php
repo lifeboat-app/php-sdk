@@ -19,14 +19,14 @@ class Products extends ApiService {
     const LIST_BARE         = 'bare';
     const SORT_TITLE_ASC    = 'title_az';
     const SORT_TITLE_DESC   = 'title_za';
-    const SORT_SKU_ASC      = 'title_az';
-    const SORT_SKU_DESC     = 'title_za';
-    const SORT_PRICE_ASC    = 'title_az';
-    const SORT_PRICE_DESC   = 'title_za';
-    const SORT_CREATED_ASC  = 'title_az';
-    const SORT_CREATED_DESC = 'title_za';
-    const SORT_EDITED_ASC   = 'title_az';
-    const SORT_EDITED_DESC  = 'title_za';
+    const SORT_SKU_ASC      = 'sku_az';
+    const SORT_SKU_DESC     = 'sku_za';
+    const SORT_PRICE_ASC    = 'price_az';
+    const SORT_PRICE_DESC   = 'price_za';
+    const SORT_CREATED_ASC  = 'created_az';
+    const SORT_CREATED_DESC = 'created_za';
+    const SORT_EDITED_ASC   = 'edited_az';
+    const SORT_EDITED_DESC  = 'edited_za';
 
     private static $_cache_lists = [];
 
