@@ -69,12 +69,7 @@ abstract class Model extends ObjectResource {
         $data = [];
 
         foreach ($this->getIterator() as $key => $value) {
-            if ($value instanceof self)         $data[$key] = $value->toArray(true);
-            else if ($value instanceof ListResource) {
-                $data[$key] = [];
-                /** @var self $item */
-                foreach ($value as $item) $data[$key][] = $item->toArray(true);
-            } else $data[$key] = $value;
+            $data[$key] = $this->flatten($value);
         }
 
         return $data;
@@ -116,5 +111,29 @@ abstract class Model extends ObjectResource {
             if (!method_exists($service, 'create')) return $this;
             return $service->create($this->toArray());
         }
+    }
+    
+    /**
+     * @param $obj
+     * @return array
+     */
+    private function flatten($obj)
+    {
+        if ($obj instanceof self) {
+            return $obj->toArray(true);
+        } else if ($obj instanceof ListResource) {
+            $data = [];
+            /** @var self $item */
+            foreach ($obj as $item) $data[] = $this->flatten($item);
+            return $data;
+        } else if (is_array($obj)) {
+            $data = [];
+            foreach ($obj as $key => $value) {
+                $data[$key] = $this->flatten($value);
+            }
+            return $data;
+        }
+        
+        return $obj;
     }
 }
