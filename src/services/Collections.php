@@ -22,7 +22,7 @@ class Collections extends ApiService {
     public function fetch(int $id): ?Collection
     {
         /** @var Collection|null $fetch */
-        $fetch = $this->_get('api/collections/collection' . $id);
+        $fetch = $this->_get('api/collections/collection/' . $id);
         return $fetch;
     }
 
