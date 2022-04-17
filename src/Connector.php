@@ -31,6 +31,7 @@ use Lifeboat\Utils\URL;
  * @property \Lifeboat\Services\Locations $locations
  * @property \Lifeboat\Services\Media $media
  * @property \Lifeboat\Services\Products $products
+ * @property \Lifeboat\Services\SearchFilters $search_filters
  */
 abstract class Connector {
 

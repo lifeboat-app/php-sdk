@@ -12,19 +12,20 @@ use Lifeboat\Services;
 class ClassMap {
 
     const MODELS = [
-        'order'         => Models\Order::class,
-        'address'       => Models\Address::class,
-        'customer'      => Models\Customer::class,
-        'collection'    => Models\Collection::class,
-        'page'          => Models\Page::class,
-        'custompage'    => Models\CustomPage::class,
-        'deliveryzone'  => Models\DeliveryZone::class,
-        'taxcode'       => Models\TaxCode::class,
-        'taxzone'       => Models\TaxZone::class,
-        'location'      => Models\Location::class,
-        'media'         => Models\Media::class,
-        'image'         => Models\Image::class,
-        'product'       => Models\Product::class
+        'order'                 => Models\Order::class,
+        'address'               => Models\Address::class,
+        'customer'              => Models\Customer::class,
+        'collection'            => Models\Collection::class,
+        'page'                  => Models\Page::class,
+        'custompage'            => Models\CustomPage::class,
+        'deliveryzone'          => Models\DeliveryZone::class,
+        'taxcode'               => Models\TaxCode::class,
+        'taxzone'               => Models\TaxZone::class,
+        'location'              => Models\Location::class,
+        'media'                 => Models\Media::class,
+        'image'                 => Models\Image::class,
+        'product'               => Models\Product::class,
+        'productsearchfilter'    => Models\SearchFilter::class
     ];
 
     const SERVICES = [
@@ -38,7 +39,8 @@ class ClassMap {
         'tax_codes'         => Services\TaxCodes::class,
         'locations'         => Services\Locations::class,
         'media'             => Services\Media::class,
-        'products'          => Services\Products::class
+        'products'          => Services\Products::class,
+        'search_filters'     => Services\SearchFilters::class
     ];
 
     const SERVICE_MODEL = [
@@ -52,6 +54,7 @@ class ClassMap {
         Services\TaxCodes::class        => Models\TaxCode::class,
         Services\Locations::class       => Models\Location::class,
         Services\Media::class           => Models\Media::class,
-        Services\Products::class        => Models\Product::class
+        Services\Products::class        => Models\Product::class,
+        Services\SearchFilters::class   => Models\SearchFilter::class
     ];
 }
