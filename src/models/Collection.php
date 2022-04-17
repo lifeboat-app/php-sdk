@@ -4,6 +4,7 @@ namespace Lifeboat\Models;
 
 use Lifeboat\Connector;
 use Lifeboat\Services\Collections;
+use Lifeboat\Traits\TagSupport;
 
 /**
  * Class Customer
@@ -17,8 +18,11 @@ use Lifeboat\Services\Collections;
  * @property array|null $Products
  * @property array $Tags
  * @property string|null $Thumbnail
+ * @property Image|null $Image
  */
 class Collection extends Model {
+
+    use TagSupport;
 
     protected static $casting = [
         'ExcludeFromSitemap'    => 'boolval',
@@ -33,7 +37,7 @@ class Collection extends Model {
             foreach ($_object_data['Products'] as $product) $products[] = $product['ID'];
             $_object_data['Products'] = $products;
         }
-        
+
         parent::__construct($client, $_object_data);
         if (array_key_exists('Rules', $_object_data)) {
             $this->Rules = json_decode($_object_data['Rules'], true);

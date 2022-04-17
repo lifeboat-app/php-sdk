@@ -2,6 +2,8 @@
 
 namespace Lifeboat\Models;
 
+use Lifeboat\Traits\TagSupport;
+
 /**
  * Class Product
  * @package Lifeboat\Models
@@ -35,7 +37,7 @@ namespace Lifeboat\Models;
  * @property int $ShippingClassID
  * @property Image|null $Image
  * @property Media[] $Media
- * @property array $SearchData
+ * @property int[] $SearchData
  * @property array $Variants
  * @property array $Descriptions
  * @property int $ReviewsCount
@@ -43,6 +45,8 @@ namespace Lifeboat\Models;
  * @property LifeboatModel[]|null $MetaData
  */
 class Product extends Page {
+
+    use TagSupport;
 
     protected static $casting = [
         'Price'             => 'floatval',
