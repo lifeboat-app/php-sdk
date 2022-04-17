@@ -39,7 +39,7 @@ class Collection extends Page {
         }
 
         parent::__construct($client, $_object_data);
-        if (array_key_exists('Rules', $_object_data)) {
+        if (array_key_exists('Rules', $_object_data) && is_string($_object_data['Rules'])) {
             $this->Rules = json_decode($_object_data['Rules'], true);
         }
     }
