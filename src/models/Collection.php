@@ -20,7 +20,7 @@ use Lifeboat\Traits\TagSupport;
  * @property string|null $Thumbnail
  * @property Image|null $Image
  */
-class Collection extends Model {
+class Collection extends Page {
 
     use TagSupport;
 
