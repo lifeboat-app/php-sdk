@@ -32,6 +32,8 @@ use Lifeboat\Utils\URL;
  * @property \Lifeboat\Services\Media $media
  * @property \Lifeboat\Services\Products $products
  * @property \Lifeboat\Services\SearchFilters $search_filters
+ * @property \Lifeboat\Services\ShippingClasses $shipping_classes
+ * @property \Lifeboat\Services\ProductTypes $product_types
  */
 abstract class Connector {
 

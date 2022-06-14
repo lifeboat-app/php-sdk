@@ -241,4 +241,15 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
     {
         foreach ($this as $obj) return $obj;
     }
+
+    /**
+     * @return array
+     * @throws OAuthException
+     */
+    public function toArray(): array
+    {
+        $arr = [];
+        foreach (self::getIterator() as $item) $arr[] = $item;
+        return $arr;
+    }
 }
