@@ -59,4 +59,12 @@ class Locations extends ApiService {
     public function all(): ListResource {
         return new ListResource($this->getClient(), 'api/locations/all', [], 20);
     }
+    
+    /**
+     * @param int $id
+     * @return ListResource
+     */
+    public function stock_data(int $id = 0): ListResource {
+        return new ListResource($this->getClient(), 'api/locations/stock_data', ['ID' => $id], 20);
+    }
 }
