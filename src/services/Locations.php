@@ -64,7 +64,7 @@ class Locations extends ApiService {
      * @param int $id
      * @return ListResource
      */
-    public function stock_data(int $id = 0): ListResource {
-        return new ListResource($this->getClient(), 'api/locations/stock_data', ['ID' => $id], 20);
+    public function stock_data(int $id): ListResource {
+        return new ListResource($this->getClient(), 'api/locations/stock_data/' . $id, [], 20);
     }
 }
