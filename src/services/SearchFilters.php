@@ -15,7 +15,7 @@ use Lifeboat\Resource\ListResource;
 class SearchFilters extends ApiService {
 
     /** @var ListResource|null */
-    private static $_cache_all = null;
+    private static $_cache_all = [];
 
     /**
      * @param int $id
@@ -74,10 +74,11 @@ class SearchFilters extends ApiService {
      */
     public function all(bool $clear_cache = false): ListResource
     {
-        if (is_null(self::$_cache_all) || $clear_cache) {
-            self::$_cache_all = new ListResource($this->getClient(), 'api/product-search-filters/all');
+        $client = $this->getClient();
+        if (!array_key_exists($client->getSiteKey(), self::$_cache_all) || $clear_cache) {
+            self::$_cache_all[$client->getSiteKey()] = new ListResource($client, 'api/product-search-filters/all');
         }
 
-        return self::$_cache_all;
+        return self::$_cache_all[$client->getSiteKey()];
     }
 }
