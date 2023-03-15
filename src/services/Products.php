@@ -110,10 +110,11 @@ class Products extends ApiService {
         string $type = self::LIST_BARE,
         bool $clear_cache = false
     ): ListResource {
-        $key = md5($search.$sort.$type);
+        $client = $this->getClient();
+        $key = md5($client->getSiteKey().$search.$sort.$type);
 
         if (!array_key_exists($key, self::$_cache_lists) || $clear_cache) {
-            self::$_cache_lists[$key] = new ListResource($this->getClient(), 'api/products/all', [
+            self::$_cache_lists[$key] = new ListResource($client, 'api/products/all', [
                 'search'    => $search,
                 'sort'      => $sort,
                 'data'      => $type
