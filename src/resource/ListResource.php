@@ -129,7 +129,14 @@ class ListResource implements IteratorAggregate, ArrayAccess, Countable {
             $response   = $this->getClient()->curl_api($this->getURL(), 'GET', $data);
             $data       = ($response->isValid() && $response->isJSON()) ? $response->getJSON() : [];
 
-            if (empty($data)) throw new ApiException($response->getError());
+            if (empty($data)) {
+                if ($retry > 0) {
+                    error_log("Failed to get page {$page} from {$this->getURL()} retrying");
+                    return $this->getItems($page, $retry--);
+                } else {
+                    throw new ApiException($response->getError());
+                }
+            }
 
             $this->_max_items = (int) $data['available_items'];
 
