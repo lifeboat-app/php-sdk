@@ -28,8 +28,6 @@ class Products extends ApiService {
     const SORT_EDITED_ASC   = 'edited_az';
     const SORT_EDITED_DESC  = 'edited_za';
 
-    private static $_cache_lists = [];
-
     /**
      * @param int $id
      * @return Product|null
@@ -85,15 +83,17 @@ class Products extends ApiService {
      * @param int $id
      * @param int $quantity
      * @param Location $location
+     * @param int $variant_id
      * @return bool
      * @throws ApiException
      * @throws OAuthException
      */
-    public function setStockLevel(int $id, int $quantity, Location $location): bool
+    public function setStockLevel(int $id, int $quantity, Location $location, int $variant_id = 0): bool
     {
         return (bool) $this->_post('api/products/inventory/'. $id . '/quantity', [
             'location'  => $location->ID,
-            'quantity'  => $quantity
+            'quantity'  => $quantity,
+            'variant'   => $variant_id
         ]);
     }
 
@@ -101,26 +101,22 @@ class Products extends ApiService {
      * @param string $search
      * @param string $sort
      * @param string $type
-     * @param bool $clear_cache
      * @return ListResource
      */
     public function all(
         string $search = '',
         string $sort = self::SORT_CREATED_DESC,
-        string $type = self::LIST_BARE,
-        bool $clear_cache = false
+        string $type = self::LIST_BARE
     ): ListResource {
-        $client = $this->getClient();
-        $key = md5($client->getSiteKey().$search.$sort.$type);
-
-        if (!array_key_exists($key, self::$_cache_lists) || $clear_cache) {
-            self::$_cache_lists[$key] = new ListResource($client, 'api/products/all', [
+        return new ListResource(
+            $this->getClient(), 
+            'api/products/all', 
+            [
                 'search'    => $search,
                 'sort'      => $sort,
                 'data'      => $type
-            ], 20);
-        }
-
-        return self::$_cache_lists[$key];
+            ], 
+            20
+        );
     }
 }
