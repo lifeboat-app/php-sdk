@@ -149,6 +149,7 @@ abstract class Connector {
 
         $curl = new Curl($uri, $data, $headers);
 
+        $curl->cacheRequests(true);
         $curl->setMethod($method);
         $curl->addHeader('Accept', 'application/json');
         $curl->addHeader('Host', $this->getHost());
