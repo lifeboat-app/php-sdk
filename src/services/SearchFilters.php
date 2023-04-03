@@ -4,7 +4,6 @@ namespace Lifeboat\Services;
 
 use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
-use Lifeboat\Models\Location;
 use Lifeboat\Models\Product;
 use Lifeboat\Resource\ListResource;
 
@@ -13,9 +12,6 @@ use Lifeboat\Resource\ListResource;
  * @package Lifeboat\Services
  */
 class SearchFilters extends ApiService {
-
-    /** @var ListResource|null */
-    private static $_cache_all = [];
 
     /**
      * @param int $id
@@ -69,16 +65,10 @@ class SearchFilters extends ApiService {
     }
 
     /**
-     * @param bool $clear_cache
      * @return ListResource
      */
-    public function all(bool $clear_cache = false): ListResource
+    public function all(): ListResource
     {
-        $client = $this->getClient();
-        if (!array_key_exists($client->getSiteKey(), self::$_cache_all) || $clear_cache) {
-            self::$_cache_all[$client->getSiteKey()] = new ListResource($client, 'api/product-search-filters/all');
-        }
-
-        return self::$_cache_all[$client->getSiteKey()];
+        return new ListResource($this->getClient(), 'api/product-search-filters/all');
     }
 }
