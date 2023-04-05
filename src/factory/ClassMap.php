@@ -27,7 +27,8 @@ class ClassMap {
         'product'               => Models\Product::class,
         'productsearchfilter'    => Models\SearchFilter::class,
         'shippingclass'         => Models\ShippingClass::class,
-        'producttype'           => Models\ProductType::class
+        'producttype'           => Models\ProductType::class,
+        'supplier'              => Models\Supplier::class
     ];
 
     const SERVICES = [
@@ -44,7 +45,8 @@ class ClassMap {
         'products'          => Services\Products::class,
         'search_filters'     => Services\SearchFilters::class,
         'shipping_classes'  => Services\ShippingClasses::class,
-        'product_types'     => Services\ProductTypes::class
+        'product_types'     => Services\ProductTypes::class,
+        'suppliers'         => Services\Suppliers::class
     ];
 
     const SERVICE_MODEL = [
@@ -61,6 +63,7 @@ class ClassMap {
         Services\Products::class        => Models\Product::class,
         Services\SearchFilters::class   => Models\SearchFilter::class,
         Services\ShippingClasses::class => Models\ShippingClass::class,
-        Services\ProductTypes::class    => Models\ProductType::class
+        Services\ProductTypes::class    => Models\ProductType::class,
+        Services\Suppliers::class       => Models\Supplier::class
     ];
 }

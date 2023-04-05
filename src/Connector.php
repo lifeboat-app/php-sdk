@@ -34,6 +34,7 @@ use Lifeboat\Utils\URL;
  * @property \Lifeboat\Services\SearchFilters $search_filters
  * @property \Lifeboat\Services\ShippingClasses $shipping_classes
  * @property \Lifeboat\Services\ProductTypes $product_types
+ * @property \Lifeboat\Services\Suppliers $suppliers
  */
 abstract class Connector {
 
