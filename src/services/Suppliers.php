@@ -70,6 +70,6 @@ class Suppliers extends ApiService {
      * @return ListResource
      */
     public function all(): ListResource {
-        return new ListResource($this->getClient(), 'api/suppliers/all', 20);
+        return new ListResource($this->getClient(), 'api/suppliers/all');
     }
 }
