@@ -6,6 +6,7 @@ use Lifeboat\Exceptions\ApiException;
 use Lifeboat\Exceptions\OAuthException;
 use Lifeboat\Models\Location;
 use Lifeboat\Models\Product;
+use Lifeboat\Models\Supplier;
 use Lifeboat\Resource\ListResource;
 
 /**
@@ -109,13 +110,42 @@ class Products extends ApiService {
         string $type = self::LIST_BARE
     ): ListResource {
         return new ListResource(
-            $this->getClient(), 
-            'api/products/all', 
+            $this->getClient(),
+            'api/products/all',
             [
                 'search'    => $search,
                 'sort'      => $sort,
                 'data'      => $type
-            ], 
+            ],
+            20
+        );
+    }
+
+    /**
+     * @param Location|int $location
+     * @param bool $trackable_only
+     * @param Supplier|int|null $supplier
+     * @param string $search
+     * @param string $sort
+     * @return ListResource
+     */
+    public function inventory(
+        $location,
+        bool $trackable_only = false,
+        $supplier = null,
+        string $search = '',
+        string $sort = self::SORT_CREATED_DESC
+    ): ListResource {
+        return new ListResource(
+            $this->getClient(),
+            'api/products/inventory',
+            [
+                'location'  => ($location instanceof Location) ? $location->ID : (int) $location,
+                'ts'        => ($trackable_only) ? 'on' : '',
+                'search'    => $search,
+                'sort'      => $sort,
+                'supplier'  => ($supplier instanceof Supplier) ? $supplier->ID : (int) $supplier
+            ],
             20
         );
     }
