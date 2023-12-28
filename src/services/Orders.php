@@ -137,6 +137,35 @@ class Orders extends ApiService {
     }
 
     /**
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @param string $search
+     * @param string $supplier
+     * @param bool $grouped
+     * @param int $page_length
+     * @return ListResource
+     */
+    public function sales(
+        \DateTime $start,
+        \DateTime $end,
+        string $search = '',
+        string $supplier = '',
+        bool $grouped = true,
+        int $page_length = 100
+    ): ListResource
+    {
+        $data = [
+            'start'     => $start->format('Y-m-d'),
+            'end'       => $end->format('Y-m-d'),
+            'search'    => $search,
+            'supplier'  => $supplier,
+            'grouped'   => $grouped ? 'on' : ''
+        ];
+
+        return new ListResource($this->getClient(), 'api/orders/sales', $data, $page_length);
+    }
+
+    /**
      * @param string $period
      * @param int $status
      * @param int $fulfillment
